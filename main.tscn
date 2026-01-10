@@ -1,0 +1,427 @@
+[gd_scene load_steps=41 format=3 uid="uid://cusjl8n1wtb6f"]
+
+[ext_resource type="Script" uid="uid://dkqvr5ml7o2co" path="res://ui/main_menu.gd" id="1_0mgpi"]
+[ext_resource type="Script" uid="uid://k2j64ck0isvm" path="res://ui/main_menu_cloud_driver.gd" id="1_m4e8c"]
+[ext_resource type="Texture2D" uid="uid://cjd8nqcrkdnd" path="res://ui/OASIS_logo.png" id="1_vsut2"]
+[ext_resource type="PackedScene" uid="uid://n1r1g817woap" path="res://decorations/cloud_1.tscn" id="1_wixhy"]
+[ext_resource type="PackedScene" uid="uid://de47yuehnopao" path="res://decorations/dead_tree.tscn" id="2_3v2rs"]
+[ext_resource type="PackedScene" uid="uid://c3nvgj3k7dygx" path="res://decorations/cloud_2.tscn" id="2_gln5x"]
+[ext_resource type="PackedScene" uid="uid://bslsphkm41pqg" path="res://decorations/cloud_3.tscn" id="3_jxtuu"]
+[ext_resource type="PackedScene" uid="uid://dxchsddlllfl1" path="res://decorations/dirt_2.tscn" id="3_rt3gq"]
+[ext_resource type="PackedScene" uid="uid://l2juh3st1mo6" path="res://decorations/dirt_3.tscn" id="8_g055v"]
+[ext_resource type="PackedScene" uid="uid://b7iec74heesa0" path="res://decorations/dirt_5.tscn" id="9_ram4b"]
+[ext_resource type="PackedScene" uid="uid://cqjko0s7x7ltl" path="res://decorations/dirt_6.tscn" id="10_iyumj"]
+[ext_resource type="PackedScene" uid="uid://bjh0f1ppqw4gx" path="res://decorations/dirt_8.tscn" id="11_t6k6o"]
+[ext_resource type="PackedScene" uid="uid://8dm41njm7pkj" path="res://decorations/dirt_4.tscn" id="12_fm8ab"]
+[ext_resource type="AudioStream" uid="uid://bmbs3bmb11vck" path="res://oasis-desert-zone-bgm.ogg" id="13_ttt4t"]
+[ext_resource type="PackedScene" uid="uid://cilum5h5icmdo" path="res://decorations/dead_grass_1.tscn" id="14_swp66"]
+[ext_resource type="PackedScene" uid="uid://cs5oacdiylgas" path="res://decorations/dead_grass_4.tscn" id="14_xuice"]
+[ext_resource type="PackedScene" uid="uid://b8v1aiqlxfn7y" path="res://decorations/dead_grass_3.tscn" id="15_nbtf0"]
+[ext_resource type="PackedScene" uid="uid://co0ex3jlm31c0" path="res://decorations/dead_grass_5.tscn" id="16_2ov2y"]
+[ext_resource type="PackedScene" uid="uid://bs3fyjnikoc16" path="res://decorations/dead_grass_2.tscn" id="17_yikx2"]
+[ext_resource type="Texture2D" uid="uid://7s7iffnav6md" path="res://sprites/dirty_spots/stain_1.png" id="19_wnueh"]
+[ext_resource type="Texture2D" uid="uid://4d5kdu0piitr" path="res://sprites/dirty_spots/stain_2.png" id="20_4hcp7"]
+[ext_resource type="PackedScene" uid="uid://bsqdtsq6dfs36" path="res://decorations/cactus_1.tscn" id="21_witkp"]
+[ext_resource type="PackedScene" uid="uid://2otgb546q5w" path="res://decorations/cactus_2.tscn" id="22_xquog"]
+[ext_resource type="PackedScene" uid="uid://cfd4dfkvg2iuu" path="res://decorations/cactus_3.tscn" id="23_ge6et"]
+[ext_resource type="Script" uid="uid://cd0wygt18ntg3" path="res://ui/menu_controller.gd" id="24_scbo7"]
+[ext_resource type="Texture2D" uid="uid://c7si1eqlcmbpp" path="res://sprites/player/player_notool.png" id="26_qeoya"]
+[ext_resource type="LabelSettings" uid="uid://dspmfew4vn2dr" path="res://ui/main_menu_font.tres" id="27_gnrig"]
+[ext_resource type="AudioStream" uid="uid://ukd6vweylb6" path="res://sfx/ui_button_1.wav" id="28_477in"]
+[ext_resource type="AudioStream" uid="uid://bxx5ixjmn4226" path="res://sfx/ui_button_2.wav" id="29_7gkm3"]
+[ext_resource type="AudioStream" uid="uid://s446am1odksh" path="res://sfx/ui_button_3.wav" id="30_3yglh"]
+[ext_resource type="PackedScene" uid="uid://cqtqx0vslyudt" path="res://ui/settings.tscn" id="33_x0rmv"]
+
+[sub_resource type="Curve2D" id="Curve2D_ujgx0"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 984, 55, 0, 0, 0, 0, -252, 55)
+}
+point_count = 2
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_vo144"]
+streams_count = 3
+stream_0/stream = ExtResource("28_477in")
+stream_1/stream = ExtResource("29_7gkm3")
+stream_2/stream = ExtResource("30_3yglh")
+
+[sub_resource type="Gradient" id="Gradient_l3231"]
+offsets = PackedFloat32Array(0, 0.994318)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_umg34"]
+gradient = SubResource("Gradient_l3231")
+width = 120
+height = 32
+
+[sub_resource type="Animation" id="Animation_jtiib"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6y344"]
+resource_name = "idle"
+length = 0.80001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t34jq"]
+_data = {
+&"RESET": SubResource("Animation_jtiib"),
+&"idle": SubResource("Animation_6y344")
+}
+
+[sub_resource type="Gradient" id="Gradient_621d0"]
+offsets = PackedFloat32Array(0.0340909, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_57tsd"]
+gradient = SubResource("Gradient_621d0")
+width = 160
+height = 32
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_0mgpi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.901961, 0.901961, 0.627451, 1)
+
+[node name="MenuWorld" type="Node2D" parent="." node_paths=PackedStringArray("followers")]
+script = ExtResource("1_m4e8c")
+speed = 30.0
+followers = [NodePath("Path2D/PathFollow2D"), NodePath("Path2D2/PathFollow2D"), NodePath("Path2D3/PathFollow2D")]
+
+[node name="Path2D" type="Path2D" parent="MenuWorld"]
+curve = SubResource("Curve2D_ujgx0")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="MenuWorld/Path2D"]
+position = Vector2(893.77765, 55)
+progress = 90.2307
+rotates = false
+
+[node name="Cloud1" parent="MenuWorld/Path2D/PathFollow2D" instance=ExtResource("1_wixhy")]
+
+[node name="Path2D2" type="Path2D" parent="MenuWorld"]
+position = Vector2(-205, 76)
+curve = SubResource("Curve2D_ujgx0")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="MenuWorld/Path2D2"]
+position = Vector2(365.9961, 55)
+progress = 618.004
+rotates = false
+
+[node name="Cloud2" parent="MenuWorld/Path2D2/PathFollow2D" instance=ExtResource("2_gln5x")]
+
+[node name="Path2D3" type="Path2D" parent="MenuWorld"]
+position = Vector2(-205, 76)
+curve = SubResource("Curve2D_ujgx0")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="MenuWorld/Path2D3"]
+position = Vector2(351.28812, 55)
+progress = 632.712
+rotates = false
+
+[node name="Cloud3" parent="MenuWorld/Path2D3/PathFollow2D" instance=ExtResource("3_jxtuu")]
+position = Vector2(291, -168)
+
+[node name="DeadTree" parent="MenuWorld" instance=ExtResource("2_3v2rs")]
+position = Vector2(82, 269)
+
+[node name="Dirt2" parent="MenuWorld" instance=ExtResource("3_rt3gq")]
+position = Vector2(77, 266)
+
+[node name="DeadTree5" parent="MenuWorld" instance=ExtResource("2_3v2rs")]
+position = Vector2(538, 57)
+
+[node name="DeadTree4" parent="MenuWorld" instance=ExtResource("2_3v2rs")]
+position = Vector2(127, 129)
+
+[node name="DeadTree3" parent="MenuWorld" instance=ExtResource("2_3v2rs")]
+position = Vector2(446, 189)
+
+[node name="DeadTree6" parent="MenuWorld" instance=ExtResource("2_3v2rs")]
+position = Vector2(474, 322)
+
+[node name="Dirt4" parent="MenuWorld" instance=ExtResource("12_fm8ab")]
+position = Vector2(541, 62)
+
+[node name="Dirt8" parent="MenuWorld" instance=ExtResource("11_t6k6o")]
+position = Vector2(131, 134)
+
+[node name="Dirt7" parent="MenuWorld" instance=ExtResource("10_iyumj")]
+position = Vector2(419, 192)
+
+[node name="Dirt6" parent="MenuWorld" instance=ExtResource("9_ram4b")]
+position = Vector2(501, 314)
+
+[node name="Dirt3" parent="MenuWorld" instance=ExtResource("8_g055v")]
+position = Vector2(396, 252)
+
+[node name="DeadGrass1" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(105, 203)
+
+[node name="DeadGrass11" parent="MenuWorld" instance=ExtResource("14_xuice")]
+position = Vector2(59, 320)
+
+[node name="DeadGrass10" parent="MenuWorld" instance=ExtResource("15_nbtf0")]
+position = Vector2(27, 328)
+
+[node name="DeadGrass2" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(60, 269)
+
+[node name="DeadGrass9" parent="MenuWorld" instance=ExtResource("16_2ov2y")]
+position = Vector2(239, 292)
+
+[node name="DeadGrass8" parent="MenuWorld" instance=ExtResource("14_xuice")]
+position = Vector2(231, 284)
+
+[node name="DeadGrass7" parent="MenuWorld" instance=ExtResource("16_2ov2y")]
+position = Vector2(425, 326)
+
+[node name="DeadGrass6" parent="MenuWorld" instance=ExtResource("15_nbtf0")]
+position = Vector2(508, 321)
+
+[node name="DeadGrass5" parent="MenuWorld" instance=ExtResource("14_xuice")]
+position = Vector2(487, 306)
+
+[node name="DeadGrass4" parent="MenuWorld" instance=ExtResource("16_2ov2y")]
+position = Vector2(398, 252)
+
+[node name="DeadGrass24" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(607, 337)
+
+[node name="DeadGrass23" parent="MenuWorld" instance=ExtResource("16_2ov2y")]
+position = Vector2(461, 324)
+
+[node name="DeadGrass22" parent="MenuWorld" instance=ExtResource("15_nbtf0")]
+position = Vector2(430, 196)
+
+[node name="DeadGrass25" parent="MenuWorld" instance=ExtResource("14_xuice")]
+position = Vector2(428, 207)
+
+[node name="DeadGrass21" parent="MenuWorld" instance=ExtResource("17_yikx2")]
+position = Vector2(548, 230)
+
+[node name="DeadGrass26" parent="MenuWorld" instance=ExtResource("16_2ov2y")]
+position = Vector2(602, 25)
+
+[node name="DeadGrass20" parent="MenuWorld" instance=ExtResource("14_xuice")]
+position = Vector2(444, 43)
+
+[node name="DeadGrass27" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(462, 180)
+
+[node name="DeadGrass19" parent="MenuWorld" instance=ExtResource("16_2ov2y")]
+position = Vector2(529, 123)
+
+[node name="DeadGrass28" parent="MenuWorld" instance=ExtResource("15_nbtf0")]
+position = Vector2(524, 59)
+
+[node name="DeadGrass29" parent="MenuWorld" instance=ExtResource("17_yikx2")]
+position = Vector2(376, 113)
+
+[node name="DeadGrass17" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(317, 84)
+
+[node name="DeadGrass30" parent="MenuWorld" instance=ExtResource("15_nbtf0")]
+position = Vector2(249, 113)
+
+[node name="DeadGrass16" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(25, 15)
+
+[node name="DeadGrass15" parent="MenuWorld" instance=ExtResource("15_nbtf0")]
+position = Vector2(59, 86)
+
+[node name="DeadGrass13" parent="MenuWorld" instance=ExtResource("14_swp66")]
+position = Vector2(152, 129)
+
+[node name="Stain1" type="Sprite2D" parent="MenuWorld"]
+position = Vector2(218, 297)
+texture = ExtResource("19_wnueh")
+
+[node name="Stain2" type="Sprite2D" parent="MenuWorld"]
+position = Vector2(471, 130)
+texture = ExtResource("20_4hcp7")
+
+[node name="DeadTree2" parent="MenuWorld" instance=ExtResource("2_3v2rs")]
+position = Vector2(510, 312)
+
+[node name="Cactus4" parent="MenuWorld" instance=ExtResource("21_witkp")]
+position = Vector2(251, 306)
+
+[node name="Cactus3" parent="MenuWorld" instance=ExtResource("23_ge6et")]
+position = Vector2(229, 306)
+
+[node name="Cactus2" parent="MenuWorld" instance=ExtResource("22_xquog")]
+position = Vector2(211, 282)
+
+[node name="Cactus1" parent="MenuWorld" instance=ExtResource("21_witkp")]
+position = Vector2(190, 293)
+
+[node name="Cactus5" parent="MenuWorld" instance=ExtResource("21_witkp")]
+position = Vector2(463, 110)
+
+[node name="Cactus6" parent="MenuWorld" instance=ExtResource("21_witkp")]
+position = Vector2(504, 143)
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_ttt4t")
+autoplay = true
+bus = &"BGM"
+
+[node name="SFX UI" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_vo144")
+bus = &"SFX"
+
+[node name="Menu" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource("24_scbo7")
+
+[node name="Logo" type="TextureRect" parent="Menu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -75.0
+offset_right = 131.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_vsut2")
+expand_mode = 1
+
+[node name="Options" type="VBoxContainer" parent="Menu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 30.0
+offset_right = 20.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Start" type="TextureButton" parent="Menu/Options"]
+layout_mode = 2
+texture_normal = SubResource("GradientTexture2D_umg34")
+
+[node name="Label" type="Label" parent="Menu/Options/Start"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -15.0
+offset_right = 45.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "START"
+label_settings = ExtResource("27_gnrig")
+
+[node name="Selector2" type="Sprite2D" parent="Menu/Options/Start"]
+position = Vector2(20, 18)
+texture = ExtResource("26_qeoya")
+hframes = 10
+vframes = 11
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Menu/Options/Start/Selector2"]
+libraries = {
+&"": SubResource("AnimationLibrary_t34jq")
+}
+autoplay = "idle"
+
+[node name="Label2" type="Label" parent="Menu/Options/Start"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -313.0
+offset_top = 117.0
+offset_right = -79.0
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "MADE BY AWAIZ"
+label_settings = ExtResource("27_gnrig")
+
+[node name="Settings" type="TextureButton" parent="Menu/Options"]
+layout_mode = 2
+texture_normal = SubResource("GradientTexture2D_57tsd")
+
+[node name="Label" type="Label" parent="Menu/Options/Settings"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -15.0
+offset_right = 72.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "SETTINGS"
+label_settings = ExtResource("27_gnrig")
+
+[node name="Selector" type="Sprite2D" parent="Menu/Options/Settings"]
+visible = false
+position = Vector2(-7, 18)
+texture = ExtResource("26_qeoya")
+hframes = 10
+vframes = 11
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Menu/Options/Settings/Selector"]
+libraries = {
+&"": SubResource("AnimationLibrary_t34jq")
+}
+autoplay = "idle"
+
+[node name="Settings" parent="." instance=ExtResource("33_x0rmv")]

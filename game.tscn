@@ -1,0 +1,497 @@
+[gd_scene load_steps=32 format=3 uid="uid://dg685leglcy4e"]
+
+[ext_resource type="PackedScene" uid="uid://50v8sxikq02p" path="res://ui/water_gauge.tscn" id="1_qrhh3"]
+[ext_resource type="PackedScene" uid="uid://dic8xj22l5wul" path="res://world.tscn" id="1_w7p1e"]
+[ext_resource type="Script" path="res://ui/screen_wipe.gd" id="1_wa3t1"]
+[ext_resource type="Script" path="res://game.gd" id="1_xyfbp"]
+[ext_resource type="PackedScene" uid="uid://8u45aqgregkk" path="res://ui/flask_bar.tscn" id="2_4mwnd"]
+[ext_resource type="Script" path="res://ui/move_hint_display.gd" id="5_14o7t"]
+[ext_resource type="Texture2D" uid="uid://bx8847wwmrxi2" path="res://ui/wasd_layout.png" id="6_a42a4"]
+[ext_resource type="Texture2D" uid="uid://co3eb6fdcrd2n" path="res://ui/screen_wipe_sand_particles.png" id="6_jhg2m"]
+[ext_resource type="Script" path="res://ui/action_bar.gd" id="6_uhwyv"]
+[ext_resource type="Texture2D" uid="uid://c1yttn7wiksst" path="res://ui/key_e.png" id="7_536ju"]
+[ext_resource type="FontFile" uid="uid://cvjjixrtqbbwt" path="res://Kenney Mini Square Mono.ttf" id="8_h2kua"]
+[ext_resource type="Texture2D" uid="uid://bbwdbnaqoovsc" path="res://ui/key_r.png" id="8_hc3cf"]
+[ext_resource type="Texture2D" uid="uid://dywnmcyb2yt6y" path="res://ui/key_t.png" id="11_7p615"]
+[ext_resource type="PackedScene" uid="uid://cqtqx0vslyudt" path="res://ui/settings.tscn" id="12_sb374"]
+[ext_resource type="Texture2D" uid="uid://cr03odgbc2to7" path="res://ui/comment_tutorial.png" id="15_5q61w"]
+[ext_resource type="Texture2D" uid="uid://b2avf7hr2rk04" path="res://ui/comment_setup.png" id="15_k1706"]
+[ext_resource type="Script" path="res://ui/comment_setup.gd" id="15_rcuxb"]
+[ext_resource type="LabelSettings" uid="uid://cqgxpfvbk7622" path="res://ui/dialog_label_font.tres" id="16_quafi"]
+[ext_resource type="PackedScene" uid="uid://bnls1g8atepgu" path="res://ui/word_button.tscn" id="18_dnsfe"]
+[ext_resource type="Texture2D" uid="uid://bu2b4b604iw82" path="res://ui/comment_template_button.png" id="20_iusmf"]
+[ext_resource type="Texture2D" uid="uid://bn007cyc112n2" path="res://ui/comment_full_select.png" id="21_uu4fx"]
+
+[sub_resource type="Gradient" id="Gradient_ldnr1"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.515, 1)
+colors = PackedColorArray(0.776471, 0.776471, 0.580392, 1, 0.642518, 0.641079, 0.43149, 1, 0.776471, 0.776471, 0.580392, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cf8v6"]
+gradient = SubResource("Gradient_ldnr1")
+width = 640
+
+[sub_resource type="Animation" id="Animation_l4b5d"]
+resource_name = "FadeIn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(961, 0), Vector2(1914, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jrxw5"]
+resource_name = "FadeOut"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(961, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.999),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_anim_fade_out_completed"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_ehqjt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dhs26"]
+_data = {
+"FadeIn": SubResource("Animation_l4b5d"),
+"FadeOut": SubResource("Animation_jrxw5"),
+"RESET": SubResource("Animation_ehqjt")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_xpwmq"]
+font = ExtResource("8_h2kua")
+font_color = Color(0, 0, 0, 1)
+outline_size = 4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ckpfm"]
+atlas = ExtResource("20_iusmf")
+region = Rect2(0, 0, 54, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvqpk"]
+atlas = ExtResource("20_iusmf")
+region = Rect2(54, 0, 54, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8v0eh"]
+atlas = ExtResource("20_iusmf")
+region = Rect2(108, 0, 54, 21)
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_xyfbp")
+
+[node name="ScreenWipe" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="ScreenWipe"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_wa3t1")
+
+[node name="SandFadeIn" type="TextureRect" parent="ScreenWipe/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -321.0
+offset_top = -20.0
+offset_bottom = 340.0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_jhg2m")
+
+[node name="LoadingPeriod" type="TextureRect" parent="ScreenWipe/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -961.0
+offset_right = -361.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_cf8v6")
+
+[node name="SandFadeOut" type="TextureRect" parent="ScreenWipe/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -1282.0
+offset_top = -20.0
+offset_right = -961.0
+offset_bottom = 340.0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_jhg2m")
+flip_h = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ScreenWipe"]
+libraries = {
+"": SubResource("AnimationLibrary_dhs26")
+}
+speed_scale = 3.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="FlaskBar" type="MarginContainer" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 55
+theme_override_constants/margin_top = 42
+
+[node name="Flasks" parent="UI/FlaskBar" instance=ExtResource("2_4mwnd")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="WaterGauge" parent="UI/MarginContainer" instance=ExtResource("1_qrhh3")]
+layout_mode = 2
+stretch_mode = 2
+
+[node name="MoveHintWASD" type="TextureRect" parent="UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture = ExtResource("6_a42a4")
+stretch_mode = 2
+script = ExtResource("5_14o7t")
+
+[node name="Label" type="Label" parent="UI/MarginContainer/MoveHintWASD"]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 31.0
+offset_right = 58.0
+offset_bottom = 51.0
+text = "MOVE"
+label_settings = SubResource("LabelSettings_xpwmq")
+
+[node name="ActionBar" type="HBoxContainer" parent="UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/separation = 40
+script = ExtResource("6_uhwyv")
+
+[node name="DigHint" type="TextureRect" parent="UI/MarginContainer/ActionBar"]
+visible = false
+layout_mode = 2
+texture = ExtResource("7_536ju")
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="UI/MarginContainer/ActionBar/DigHint"]
+layout_mode = 0
+offset_left = -6.0
+offset_top = 13.0
+offset_right = 34.0
+offset_bottom = 36.0
+text = "DIG"
+label_settings = SubResource("LabelSettings_xpwmq")
+
+[node name="DowseHint" type="TextureRect" parent="UI/MarginContainer/ActionBar"]
+visible = false
+layout_mode = 2
+texture = ExtResource("8_hc3cf")
+
+[node name="Label2" type="Label" parent="UI/MarginContainer/ActionBar/DowseHint"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 13.0
+offset_right = 36.0
+offset_bottom = 36.0
+text = "SCAN"
+label_settings = SubResource("LabelSettings_xpwmq")
+
+[node name="InscribeHint" type="TextureRect" parent="UI/MarginContainer/ActionBar"]
+layout_mode = 2
+texture = ExtResource("11_7p615")
+
+[node name="Label2" type="Label" parent="UI/MarginContainer/ActionBar/InscribeHint"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = 13.0
+offset_right = 58.0
+offset_bottom = 36.0
+text = "WRITE"
+label_settings = SubResource("LabelSettings_xpwmq")
+horizontal_alignment = 1
+
+[node name="Settings" parent="." instance=ExtResource("12_sb374")]
+
+[node name="World" parent="." instance=ExtResource("1_w7p1e")]
+metadata/_edit_lock_ = true
+
+[node name="CommentSetup" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource("15_rcuxb")
+
+[node name="Explanation" type="TextureRect" parent="CommentSetup"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -29.0
+offset_right = 62.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_5q61w")
+
+[node name="Label5" type="Label" parent="CommentSetup/Explanation"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Guide other players with a simple phrase."
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+autowrap_mode = 2
+clip_text = true
+
+[node name="StartCreation" parent="CommentSetup/Explanation" instance=ExtResource("18_dnsfe")]
+layout_mode = 1
+
+[node name="TemplateSelect" type="TextureRect" parent="CommentSetup"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -29.0
+offset_right = 62.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_k1706")
+stretch_mode = 2
+
+[node name="TemplateOption1" type="TextureButton" parent="CommentSetup/TemplateSelect"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 60.0
+offset_bottom = 27.0
+focus_neighbor_right = NodePath("../TemplateOption2")
+focus_neighbor_bottom = NodePath("../TemplateOption3")
+focus_next = NodePath("../TemplateOption2")
+focus_previous = NodePath("../TemplateOption4")
+texture_normal = SubResource("AtlasTexture_ckpfm")
+texture_pressed = SubResource("AtlasTexture_qvqpk")
+texture_hover = SubResource("AtlasTexture_8v0eh")
+
+[node name="Label" type="Label" parent="CommentSetup/TemplateSelect/TemplateOption1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PRAISE"
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TemplateOption2" type="TextureButton" parent="CommentSetup/TemplateSelect"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 6.0
+offset_right = 118.0
+offset_bottom = 27.0
+focus_neighbor_left = NodePath("../TemplateOption1")
+focus_neighbor_bottom = NodePath("../TemplateOption4")
+focus_next = NodePath("../TemplateOption3")
+focus_previous = NodePath("../TemplateOption1")
+texture_normal = SubResource("AtlasTexture_ckpfm")
+texture_pressed = SubResource("AtlasTexture_qvqpk")
+texture_hover = SubResource("AtlasTexture_8v0eh")
+
+[node name="Label" type="Label" parent="CommentSetup/TemplateSelect/TemplateOption2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "BEWARE"
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TemplateOption3" type="TextureButton" parent="CommentSetup/TemplateSelect"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 31.0
+offset_right = 60.0
+offset_bottom = 52.0
+focus_neighbor_top = NodePath("../TemplateOption1")
+focus_neighbor_right = NodePath("../TemplateOption4")
+focus_next = NodePath("../TemplateOption4")
+focus_previous = NodePath("../TemplateOption2")
+texture_normal = SubResource("AtlasTexture_ckpfm")
+texture_pressed = SubResource("AtlasTexture_qvqpk")
+texture_hover = SubResource("AtlasTexture_8v0eh")
+
+[node name="Label" type="Label" parent="CommentSetup/TemplateSelect/TemplateOption3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "TRY"
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TemplateOption4" type="TextureButton" parent="CommentSetup/TemplateSelect"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 31.0
+offset_right = 118.0
+offset_bottom = 52.0
+focus_neighbor_left = NodePath("../TemplateOption3")
+focus_neighbor_top = NodePath("../TemplateOption2")
+focus_next = NodePath("../TemplateOption1")
+focus_previous = NodePath("../TemplateOption3")
+texture_normal = SubResource("AtlasTexture_ckpfm")
+texture_pressed = SubResource("AtlasTexture_qvqpk")
+texture_hover = SubResource("AtlasTexture_8v0eh")
+
+[node name="Label" type="Label" parent="CommentSetup/TemplateSelect/TemplateOption4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "NEED"
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NounSelect" type="TextureRect" parent="CommentSetup"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -29.0
+offset_right = 62.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_uu4fx")
+stretch_mode = 2
+
+[node name="NounContainer" type="HFlowContainer" parent="CommentSetup/NounSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 7.0
+offset_right = -9.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Preview" type="TextureRect" parent="CommentSetup"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -29.0
+offset_right = 62.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_5q61w")
+
+[node name="PreviewComment" type="Label" parent="CommentSetup/Preview"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PRAISE AQUA"
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+clip_text = true
+
+[node name="FinishCreate" parent="CommentSetup/Preview" instance=ExtResource("18_dnsfe")]
+layout_mode = 1
