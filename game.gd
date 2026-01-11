@@ -27,7 +27,8 @@ var wisdom_container: Control = null
 func _ready() -> void:
 	# TODO: Add retry logic if the first room is full,
 	#  fallback to the next and so on
-	if not OS.has_feature("editor"):
+	# Don't connect to Playroom if using LAN multiplayer
+	if not OS.has_feature("editor") and not NetworkManager.is_multiplayer:
 		Playroom.connect_room(Playroom.GLOBAL_ROOMS[0])
 
 	settings.visible = false
