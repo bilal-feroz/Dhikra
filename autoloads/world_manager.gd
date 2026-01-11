@@ -25,6 +25,9 @@ signal player_upgraded(upgrade: String)
 signal player_started_writing()
 signal player_finished_writing(phrase: int, word: int)
 
+# Warning before a dust storm spawns.
+signal dust_storm_warning(time_until: float)
+
 # Time system signals (Milestone 1)
 signal time_period_changed(period: int)
 
@@ -40,6 +43,32 @@ var player_has_shovel := false
 var player_has_flask := false
 var player_completed_game := false
 var player_total_flasks := 0
+
+# Selected objective from objective selection screen
+var selected_objective_name := "The Final Oasis"
+var selected_objective_position := Vector2(47, 4336)
+
+# Bedouin wisdom proverbs - shown on death/respawn
+const BEDOUIN_WISDOM := [
+	{"arabic": "الصبر مفتاح الفرج", "english": "Patience is the key to relief"},
+	{"arabic": "من سار على الدرب وصل", "english": "He who walks the path arrives"},
+	{"arabic": "العين بصيرة واليد قصيرة", "english": "The eye sees far, but the hand is short"},
+	{"arabic": "الماء عند العطشان جوهرة", "english": "Water to the thirsty is a jewel"},
+	{"arabic": "النجوم لا تكذب", "english": "The stars do not lie"},
+	{"arabic": "الصحراء تعلم الصبر", "english": "The desert teaches patience"},
+	{"arabic": "من جد وجد", "english": "Who strives shall find"},
+	{"arabic": "الطريق الطويل يبدأ بخطوة", "english": "The long road begins with one step"},
+]
+
+var last_wisdom_index := -1
+
+func get_random_wisdom() -> Dictionary:
+	var idx := randi() % len(BEDOUIN_WISDOM)
+	# Avoid repeating the same wisdom twice
+	while idx == last_wisdom_index and len(BEDOUIN_WISDOM) > 1:
+		idx = randi() % len(BEDOUIN_WISDOM)
+	last_wisdom_index = idx
+	return BEDOUIN_WISDOM[idx]
 
 
 # Called when the node enters the scene tree for the first time.

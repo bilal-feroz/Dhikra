@@ -15,8 +15,8 @@ var time_of_day: float = 0.30:  # Start at early morning
 	set(value):
 		time_of_day = wrapf(value, 0.0, 1.0)
 
-## Real seconds for one full day cycle (5 min default)
-@export var day_length_seconds: float = 300.0
+## Real seconds for one full day cycle (3 min default)
+@export var day_length_seconds: float = 180.0
 
 ## Current time period (cached, updates on change)
 var current_period: Period = Period.DAY

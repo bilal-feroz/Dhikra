@@ -34,9 +34,9 @@ func _ready() -> void:
 	visual.color = Color(0.8, 0.6, 0.3, 0.35)  # Semi-transparent sandy brown
 	add_child(visual)
 
-	# Add HUGE warning label
+	# Add HUGE warning label - heritage themed
 	var label = Label.new()
-	label.text = "!!! DUST STORM !!!"
+	label.text = "عاصفة رملية - SANDSTORM"
 	label.add_theme_font_size_override("font_size", 48)
 	label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.3, 1.0))
 	label.add_theme_color_override("font_outline_color", Color(0.5, 0.2, 0.0, 1.0))

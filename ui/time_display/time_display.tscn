@@ -1,13 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8time_display"]
+[gd_scene load_steps=5 format=3 uid="uid://c8time_display"]
 
 [ext_resource type="Script" path="res://ui/time_display/time_display.gd" id="1"]
 [ext_resource type="FontFile" uid="uid://cvjjixrtqbbwt" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_period"]
+font = ExtResource("2_font")
+font_size = 16
+font_color = Color(1.0, 0.95, 0.8, 1)
+outline_size = 3
+outline_color = Color(0.15, 0.1, 0.05, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_countdown"]
+font = ExtResource("2_font")
+font_size = 10
+font_color = Color(0.85, 0.8, 0.7, 1)
+outline_size = 2
+outline_color = Color(0.1, 0.08, 0.05, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_storm"]
+font = ExtResource("2_font")
+font_size = 9
+font_color = Color(0.9, 0.75, 0.35, 1)
+outline_size = 2
+outline_color = Color(0.1, 0.08, 0.05, 0.9)
+
 [node name="TimeDisplay" type="Control"]
-custom_minimum_size = Vector2(150, 28)
+custom_minimum_size = Vector2(200, 56)
 anchors_preset = 0
-offset_right = 150.0
-offset_bottom = 28.0
+offset_right = 200.0
+offset_bottom = 56.0
 script = ExtResource("1")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -17,10 +41,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 
 [node name="TimeIcon" type="TextureRect" parent="HBoxContainer"]
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_vertical = 4
 expand_mode = 1
@@ -29,8 +53,7 @@ stretch_mode = 5
 [node name="PeriodLabel" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 12
+label_settings = SubResource("LabelSettings_period")
 text = "DAY"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -38,9 +61,20 @@ vertical_alignment = 1
 [node name="CountdownLabel" type="Label" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 10
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-text = "Night in 2:30"
+label_settings = SubResource("LabelSettings_countdown")
+text = "Dusk in 2:30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StormWarningLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_top = 32.0
+offset_bottom = 52.0
+grow_horizontal = 2
+text = "! SANDSTORM IN 0:10"
+label_settings = SubResource("LabelSettings_storm")
 horizontal_alignment = 1
 vertical_alignment = 1

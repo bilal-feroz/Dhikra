@@ -7,6 +7,16 @@ signal play_again_pressed()
 @onready var water_label: Label = $Panel/Margin/Content/Stats/WaterRow/WaterValue
 @onready var play_again_btn: TextureButton = $Panel/Margin/Content/Buttons/PlayAgain
 @onready var main_menu_btn: TextureButton = $Panel/Margin/Content/Buttons/MainMenu
+@onready var blessing_label: Label = $Panel/Margin/Content/Blessing
+
+const BLESSINGS := [
+	"مبروك - You walked with the wisdom of the ancestors.",
+	"ما شاء الله - The desert remembers those who respect her.",
+	"Your Dhikra (ذكرى) will guide others home.",
+	"بركة - Barakah be upon your journey.",
+	"الحمد لله - The Rub al-Khali has welcomed you.",
+	"You have honored the way of Farasat Al-Sahraa.",
+]
 
 func _ready() -> void:
 	visible = false
@@ -24,6 +34,17 @@ func _on_game_completed() -> void:
 	time_label.text = "%02d:%02d" % [minutes, seconds]
 	deaths_label.text = "%d" % WorldManager.total_deaths
 	water_label.text = "%.0f" % [WorldManager.total_water_consumed / 100.0]
+
+	# Pick a random blessing based on performance
+	if blessing_label:
+		var blessing_idx := 0
+		if WorldManager.total_deaths == 0:
+			blessing_idx = 0  # Perfect run
+		elif WorldManager.total_deaths <= 2:
+			blessing_idx = 1  # Good run
+		else:
+			blessing_idx = randi() % len(BLESSINGS)
+		blessing_label.text = BLESSINGS[blessing_idx]
 
 	# Show after short delay for dramatic effect
 	await get_tree().create_timer(1.5).timeout
