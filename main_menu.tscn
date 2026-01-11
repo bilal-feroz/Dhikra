@@ -1,0 +1,126 @@
+[gd_scene load_steps=2 format=3 uid="uid://main_menu_001"]
+
+[ext_resource type="Script" path="res://main_menu_controller.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.8, 0.7, 0.5, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "DHIKRA"
+horizontal_alignment = 1
+
+[node name="SinglePlayerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Single Player"
+
+[node name="HostButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Host Multiplayer"
+
+[node name="JoinButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Join Multiplayer"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="JoinPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="JoinPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="JoinPanel/VBoxContainer"]
+layout_mode = 2
+text = "Enter Host IP Address:"
+horizontal_alignment = 1
+
+[node name="IPInput" type="LineEdit" parent="JoinPanel/VBoxContainer"]
+layout_mode = 2
+text = "127.0.0.1"
+placeholder_text = "Enter IP address"
+alignment = 1
+
+[node name="PortInput" type="LineEdit" parent="JoinPanel/VBoxContainer"]
+layout_mode = 2
+text = "7777"
+placeholder_text = "Port (default: 7777)"
+alignment = 1
+
+[node name="ConnectButton" type="Button" parent="JoinPanel/VBoxContainer"]
+layout_mode = 2
+text = "Connect"
+
+[node name="BackButton" type="Button" parent="JoinPanel/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[node name="StatusLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -30.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+text = ""
+horizontal_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/SinglePlayerButton" to="." method="_on_single_player_pressed"]
+[connection signal="pressed" from="VBoxContainer/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="VBoxContainer/JoinButton" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="JoinPanel/VBoxContainer/ConnectButton" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="JoinPanel/VBoxContainer/BackButton" to="." method="_on_back_pressed"]

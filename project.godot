@@ -21,6 +21,7 @@ TimeManager="*res://autoloads/time_manager.gd"
 Playroom="*res://autoloads/playroom.gd"
 WorldManager="*res://autoloads/world_manager.gd"
 SoundManager="*res://autoloads/sound_manager.gd"
+NetworkManager="*res://autoloads/network_manager.gd"
 
 [debug]
 
