@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+TimeManager="*res://autoloads/time_manager.gd"
 Playroom="*res://autoloads/playroom.gd"
 WorldManager="*res://autoloads/world_manager.gd"
 SoundManager="*res://autoloads/sound_manager.gd"

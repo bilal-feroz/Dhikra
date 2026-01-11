@@ -354,10 +354,15 @@ func _process_water_drain(delta: float) -> void:
 		return
 	
 	# Start with a base of -3 for the heat burning you
-	var intensity := -3
-	
+	# Milestone 1: Apply time-of-day multiplier (night = slower drain)
+	var time_mult := 1.0
+	if TimeManager:
+		time_mult = TimeManager.get_drain_multiplier()
+
+	var intensity := int(-3.0 * time_mult)
+
 	if in_oasis > 0:
-		intensity = 3
+		intensity = 3  # Oasis always heals at full rate
 	
 	# Add booster from being in the shade
 	intensity += in_shade

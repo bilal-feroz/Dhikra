@@ -25,6 +25,9 @@ signal player_upgraded(upgrade: String)
 signal player_started_writing()
 signal player_finished_writing(phrase: int, word: int)
 
+# Time system signals (Milestone 1)
+signal time_period_changed(period: int)
+
 var current_zone := ""
 
 # Stats for reporting at the end of the game

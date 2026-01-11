@@ -99,7 +99,7 @@ func _on_game_complete() -> void:
 		]
 		
 		var time_label := DIALOG_LABEL.instantiate()
-		time_label.text = "Time: %s\nDeaths: %d\nAqua Used: %s" % [
+		time_label.text = "Journey: %s\nTrials: %d\nWater: %s vessels" % [
 			time_str,
 			deaths_total,
 			"%0.2f" % [water_consumed / 100.0]

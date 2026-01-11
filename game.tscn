@@ -237,7 +237,7 @@ offset_left = -6.0
 offset_top = 13.0
 offset_right = 34.0
 offset_bottom = 36.0
-text = "DIG"
+text = "UNEARTH"
 label_settings = SubResource("LabelSettings_xpwmq")
 
 [node name="DowseHint" type="TextureRect" parent="UI/MarginContainer/ActionBar"]
@@ -251,7 +251,7 @@ offset_left = -12.0
 offset_top = 13.0
 offset_right = 36.0
 offset_bottom = 36.0
-text = "SCAN"
+text = "SENSE"
 label_settings = SubResource("LabelSettings_xpwmq")
 
 [node name="InscribeHint" type="TextureRect" parent="UI/MarginContainer/ActionBar"]
@@ -264,7 +264,7 @@ offset_left = -38.0
 offset_top = 13.0
 offset_right = 58.0
 offset_bottom = 36.0
-text = "WRITE"
+text = "INSCRIBE"
 label_settings = SubResource("LabelSettings_xpwmq")
 horizontal_alignment = 1
 
