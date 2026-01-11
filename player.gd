@@ -114,6 +114,7 @@ var total_flasks := 0
 var in_oasis := 0
 var in_shade := 0 # Needs to be a counter because there may be overlaps
 var in_dust_storm := 0  # Counter for overlapping dust storms
+var in_rain := 0  # Counter for rain zones
 
 var current_dialog: SpeechDetector = null
 
@@ -250,15 +251,12 @@ func _physics_process(delta: float) -> void:
 			sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
 			# Fade in screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.5, delta * 3.0)
-<<<<<<< Updated upstream
+			# Continuous haptic rumble while in storm
+			Input.start_joy_vibration(0, 0.2, 0.4, 0.15)
 		elif in_rain > 0:
 			sprite_2d.modulate = Color(0.7, 0.8, 1.0, 1.0)  # Bluish tint when in rain
 			# Fade out screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.0, delta * 3.0)
-=======
-			# Continuous haptic rumble while in storm
-			Input.start_joy_vibration(0, 0.2, 0.4, 0.15)
->>>>>>> Stashed changes
 		else:
 			sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
 			# Fade out screen overlay
@@ -640,12 +638,6 @@ func _on_dust_storm_entered(body: Area2D) -> void:
 		# Controller haptic feedback - strong vibration burst
 		Input.start_joy_vibration(0, 0.7, 1.0, 0.5)
 
-		# One-time knockback when entering storm
-		var storm_id = body.get_instance_id()
-		if not pushed_by_storms.has(storm_id):
-			pushed_by_storms[storm_id] = true
-			_apply_dust_storm_knockback()
-
 func _on_dust_storm_exited(body: Area2D) -> void:
 	if is_remote_player:
 		return
@@ -653,6 +645,17 @@ func _on_dust_storm_exited(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm -= 1
 		in_dust_storm = maxi(in_dust_storm, 0)
+
+func _on_rain_entered(_body: Area2D) -> void:
+	if is_remote_player:
+		return
+	in_rain += 1
+
+func _on_rain_exited(_body: Area2D) -> void:
+	if is_remote_player:
+		return
+	in_rain -= 1
+	in_rain = maxi(in_rain, 0)
 
 func _on_dialog_entered(body: Area2D) -> void:
 	if is_remote_player:

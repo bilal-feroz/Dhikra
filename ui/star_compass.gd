@@ -5,6 +5,10 @@ class_name StarCompass
 ## Night-time navigation compass showing direction to objective
 ## Represents Najm Al-Shimali (North Star) navigation - traditional Bedouin wayfinding
 
+const COMPASS_FONT := preload("res://Kenney Mini Square Mono.ttf")
+const STAR_GLYPH := "*"
+const ARROW_GLYPH := "^"
+
 @onready var compass_container: Control = $CompassContainer
 @onready var star_icon: Label = $CompassContainer/StarIcon
 @onready var direction_arrow: Label = $CompassContainer/DirectionArrow
@@ -20,15 +24,18 @@ func _ready() -> void:
 	modulate.a = 0.0
 
 	# Style the compass
-	star_icon.text = "★"
+	star_icon.text = STAR_GLYPH
+	star_icon.add_theme_font_override("font", COMPASS_FONT)
 	star_icon.add_theme_font_size_override("font_size", 24)
 	star_icon.add_theme_color_override("font_color", Color(1.0, 1.0, 0.8, 1.0))
 
-	direction_arrow.text = "▼"
+	direction_arrow.text = ARROW_GLYPH
+	direction_arrow.add_theme_font_override("font", COMPASS_FONT)
 	direction_arrow.add_theme_font_size_override("font_size", 16)
 	direction_arrow.add_theme_color_override("font_color", Color(0.8, 0.8, 1.0, 0.9))
 
 	hint_label.text = "Najm Al-Shimali"
+	hint_label.add_theme_font_override("font", COMPASS_FONT)
 	hint_label.add_theme_font_size_override("font_size", 8)
 	hint_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.9, 0.8))
 
