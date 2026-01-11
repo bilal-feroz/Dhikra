@@ -57,6 +57,14 @@ func _on_multiplayer() -> void:
 	sfx_ui.play()
 	multiplayer_panel.visible = true
 
+	# Show initial state with both host/join buttons visible
+	host_btn.visible = true
+	join_btn.visible = true
+	back_btn.visible = true
+	ip_input.visible = false
+	port_input.visible = false
+	status_label.text = ""
+
 func _on_host_pressed() -> void:
 	status_label.text = "Hosting game..."
 
@@ -77,15 +85,32 @@ func _on_host_pressed() -> void:
 			local_ip = ip
 			break
 
-	status_label.text = "Hosting on: " + local_ip + ":" + str(DEFAULT_PORT) + "\nWaiting for other player..."
+	# Hide inputs and host/join buttons, show only back button
+	ip_input.visible = false
+	port_input.visible = false
+	host_btn.visible = false
+	join_btn.visible = false
+	back_btn.visible = true
 
-	# Disable host/join buttons while waiting
-	host_btn.disabled = true
-	join_btn.disabled = true
+	status_label.text = "Share this IP with your friend:\n" + local_ip + ":" + str(DEFAULT_PORT) + "\n\nWaiting for player to join..."
 
 func _on_join_pressed() -> void:
+	# Show IP input if not visible
+	if not ip_input.visible:
+		ip_input.visible = true
+		port_input.visible = true
+		host_btn.visible = false
+		join_btn.text = "CONNECT"
+		status_label.text = "Enter the host's IP address above"
+		return
+
+	# Actually connect
 	var ip = ip_input.text
 	var port = int(port_input.text)
+
+	if ip == "" or ip == null:
+		status_label.text = "Please enter host's IP address!"
+		return
 
 	if port == 0:
 		port = DEFAULT_PORT
@@ -102,17 +127,23 @@ func _on_join_pressed() -> void:
 	multiplayer.multiplayer_peer = peer
 	NetworkManager.setup_multiplayer(false)
 
-	# Disable buttons while connecting
-	host_btn.disabled = true
-	join_btn.disabled = true
+	# Hide inputs and join button
+	ip_input.visible = false
+	port_input.visible = false
+	join_btn.visible = false
 
 func _on_back_pressed() -> void:
 	multiplayer_panel.visible = false
 	status_label.text = ""
 
-	# Re-enable buttons and disconnect if connected
+	# Reset UI state
+	host_btn.visible = true
+	join_btn.visible = true
+	join_btn.text = "JOIN GAME"
 	host_btn.disabled = false
 	join_btn.disabled = false
+	ip_input.visible = false
+	port_input.visible = false
 
 	if multiplayer.multiplayer_peer:
 		multiplayer.multiplayer_peer.close()
