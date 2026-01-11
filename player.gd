@@ -641,6 +641,10 @@ func _on_dust_storm_entered(body: Area2D) -> void:
 		_camera_shake(0.3, 5.0)
 		# Controller haptic feedback - strong vibration burst
 		Input.start_joy_vibration(0, 0.7, 1.0, 0.5)
+		var storm_id := body.get_instance_id()
+		if not being_knocked_back and not pushed_by_storms.has(storm_id):
+			pushed_by_storms[storm_id] = true
+			_apply_dust_storm_knockback()
 
 func _on_dust_storm_exited(body: Area2D) -> void:
 	if is_remote_player:
@@ -649,6 +653,7 @@ func _on_dust_storm_exited(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm -= 1
 		in_dust_storm = maxi(in_dust_storm, 0)
+		pushed_by_storms.erase(body.get_instance_id())
 
 func _apply_dust_storm_knockback() -> void:
 	# End oasis position (final destination)
