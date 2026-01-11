@@ -79,19 +79,6 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="BgmSelector" type="Sprite2D" parent="VBoxContainer/HBoxContainer"]
-visible = false
-position = Vector2(-12.5, 17)
-texture = ExtResource("2_563s3")
-hframes = 10
-vframes = 11
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/HBoxContainer/BgmSelector"]
-libraries = {
-"": SubResource("AnimationLibrary_t34jq")
-}
-autoplay = "idle"
-
 [node name="BGM" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -115,19 +102,6 @@ value = 0.5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-
-[node name="SfxSelector" type="Sprite2D" parent="VBoxContainer/HBoxContainer2"]
-visible = false
-position = Vector2(22.5, 17)
-texture = ExtResource("2_563s3")
-hframes = 10
-vframes = 11
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/HBoxContainer2/SfxSelector"]
-libraries = {
-"": SubResource("AnimationLibrary_t34jq")
-}
-autoplay = "idle"
 
 [node name="SFX" type="Label" parent="VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(90, 30)
@@ -158,28 +132,16 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -66.0
-offset_top = -101.0
+offset_top = -131.0
 offset_right = 66.0
-offset_bottom = -74.0
+offset_bottom = -104.0
 grow_horizontal = 2
 grow_vertical = 0
 focus_neighbor_top = NodePath("../VBoxContainer/HBoxContainer2/SFXLevel")
-focus_next = NodePath("../VBoxContainer/HBoxContainer/BGMLevel")
+focus_neighbor_bottom = NodePath("../Exit")
+focus_next = NodePath("../Exit")
 focus_previous = NodePath("../VBoxContainer/HBoxContainer2/SFXLevel")
 theme = SubResource("Theme_owypu")
-
-[node name="AcceptSelector" type="Sprite2D" parent="Accept"]
-visible = false
-position = Vector2(-1, 15)
-texture = ExtResource("2_563s3")
-hframes = 10
-vframes = 11
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Accept/AcceptSelector"]
-libraries = {
-"": SubResource("AnimationLibrary_t34jq")
-}
-autoplay = "idle"
 
 [node name="Label" type="Label" parent="Accept"]
 layout_mode = 1
@@ -195,4 +157,38 @@ offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "ACCEPT"
+label_settings = ExtResource("3_ujnbr")
+
+[node name="Exit" type="TextureButton" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.0
+offset_top = -96.0
+offset_right = 66.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_neighbor_top = NodePath("../Accept")
+focus_neighbor_bottom = NodePath("../VBoxContainer/HBoxContainer/BGMLevel")
+focus_next = NodePath("../VBoxContainer/HBoxContainer/BGMLevel")
+focus_previous = NodePath("../Accept")
+theme = SubResource("Theme_owypu")
+
+[node name="Label" type="Label" parent="Exit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -15.0
+offset_right = 54.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "EXIT"
 label_settings = ExtResource("3_ujnbr")

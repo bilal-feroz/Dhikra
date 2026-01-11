@@ -261,9 +261,9 @@ texture = ExtResource("11_7p615")
 
 [node name="Label2" type="Label" parent="UI/MarginContainer/ActionBar/InscribeHint"]
 layout_mode = 0
-offset_left = -38.0
+offset_left = -60.0
 offset_top = 13.0
-offset_right = 58.0
+offset_right = 40.0
 offset_bottom = 36.0
 text = "INSCRIBE"
 label_settings = SubResource("LabelSettings_xpwmq")

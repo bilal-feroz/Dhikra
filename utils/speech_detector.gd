@@ -19,6 +19,9 @@ const DIALOG_LABEL = preload("res://ui/dialog_label.tscn")
 @onready var challenge_2_done: Node2D = $DialogBox/Challenge2Done
 @onready var game_complete: Node2D = $DialogBox/GameComplete
 
+var desert_bgm: AudioStreamPlayer = null
+var oasis_bgm: AudioStreamPlayer = null
+
 var seen_dialogs := {}
 
 var dialog_offset := 0
@@ -29,19 +32,25 @@ var active_dialog_tree: Node2D = null
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	
+
 	dialog_hint.visible = true
 	dialog_box.visible = false
 	dialog_advancekey.visible = false
 
 	WorldManager.player_upgraded.connect(_on_player_upgrade)
 	WorldManager.game_completed.connect(_on_game_complete)
-	
+
 	for lbl in dialog_box.get_children():
 		lbl.visible = false
-	
+
 	active_dialog_tree = intro_dialogs
 	active_dialog_tree.visible = true
+
+	# Find BGM players in the scene tree
+	var bgm_node = get_node_or_null("/root/Main/World/BGM")
+	if bgm_node:
+		desert_bgm = bgm_node.get_node_or_null("DesertBGM")
+		oasis_bgm = bgm_node.get_node_or_null("OasisBGM")
 
 func advance() -> void:
 	active_dialog_tree.get_children()[dialog_offset].visible = false
@@ -62,15 +71,27 @@ func _on_body_entered(body: Node2D) -> void:
 		dialog_box.visible = true
 		dialog_advancekey.visible = true
 		active_dialog_tree.get_children()[dialog_offset].visible = true
+
+		# Pause background music
+		if desert_bgm:
+			desert_bgm.stream_paused = true
+		if oasis_bgm:
+			oasis_bgm.stream_paused = true
 		
 func _on_body_exited(body: Node2D) -> void:
 	if body is Player and not body.is_remote_player:
 		dialog_box.visible = false
 		dialog_advancekey.visible = false
-		
+
 		advance()
-		
+
 		dialog_hint.visible = not seen_all_dialogs
+
+		# Resume background music
+		if desert_bgm:
+			desert_bgm.stream_paused = false
+		if oasis_bgm:
+			oasis_bgm.stream_paused = false
 
 func _on_game_complete() -> void:
 	active_dialog_tree.visible = false

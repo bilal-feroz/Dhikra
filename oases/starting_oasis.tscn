@@ -1,9 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://cmn5brqbir8ed"]
+[gd_scene load_steps=36 format=3 uid="uid://cmn5brqbir8ed"]
 
-[ext_resource type="Script" path="res://oases/oasis.gd" id="1_abcjj"]
+[ext_resource type="Script" uid="uid://cillp8543dx27" path="res://oases/oasis.gd" id="1_abcjj"]
 [ext_resource type="PackedScene" uid="uid://x6tgegp3hxrt" path="res://decorations/oasis_tall_grass_1.tscn" id="1_gkufe"]
 [ext_resource type="PackedScene" uid="uid://b3vufesco82sw" path="res://decorations/oasis_1.tscn" id="1_npltt"]
-[ext_resource type="PackedScene" uid="uid://b6337ix4gewji" path="res://decorations/dead_player.tscn" id="2_tsfh8"]
 [ext_resource type="PackedScene" uid="uid://ddy61e5a50pon" path="res://decorations/oasis_2.tscn" id="3_aspma"]
 [ext_resource type="PackedScene" uid="uid://dm0r81fuhxww7" path="res://decorations/oasis_grass_1.tscn" id="3_jdqkw"]
 [ext_resource type="Texture2D" uid="uid://dox1m5b1c4cdg" path="res://sprites/borders/oasis_sand_patch_1.png" id="3_l3n71"]
@@ -1482,14 +1481,6 @@ position = Vector2(-214, -27)
 
 [node name="Decorations" type="Node2D" parent="."]
 y_sort_enabled = true
-
-[node name="DeadPlayer" parent="Decorations" instance=ExtResource("2_tsfh8")]
-position = Vector2(-118, -105)
-player_name = "Profour"
-
-[node name="DeadPlayer4" parent="Decorations" instance=ExtResource("2_tsfh8")]
-position = Vector2(-135, -127)
-player_name = "ImAPerson100"
 
 [node name="Tent1" parent="Decorations" instance=ExtResource("12_ilaq6")]
 position = Vector2(-83, -125)
