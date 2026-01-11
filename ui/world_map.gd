@@ -3,7 +3,6 @@ extends CanvasLayer
 signal map_closed()
 
 const START_OASIS_POS := Vector2(-3, -2)
-const END_OASIS_POS := Vector2(47, 4336)
 
 @onready var compass: TextureRect = $Panel/Margin/Content/CompassContainer/Compass
 @onready var player_marker: ColorRect = $Panel/Margin/Content/CompassContainer/PlayerMarker
@@ -12,6 +11,9 @@ const END_OASIS_POS := Vector2(47, 4336)
 @onready var close_button: TextureButton = $Panel/Margin/Content/CloseButton
 
 var player_ref: Node2D = null
+
+func _get_target_position() -> Vector2:
+	return WorldManager.selected_objective_position
 
 func _ready() -> void:
 	close_button.pressed.connect(_on_close)
@@ -28,8 +30,10 @@ func _update_position() -> void:
 	if player_ref == null:
 		return
 
+	var target_pos := _get_target_position()
+
 	# Calculate progress as percentage (vertical journey)
-	var total_distance := END_OASIS_POS.y - START_OASIS_POS.y
+	var total_distance := target_pos.y - START_OASIS_POS.y
 	var current_progress := player_ref.global_position.y - START_OASIS_POS.y
 	var progress_percent := clampf(current_progress / total_distance, 0.0, 1.0)
 
@@ -39,12 +43,14 @@ func _update_position() -> void:
 	var marker_y := lerpf(compass_height * 0.4, -compass_height * 0.4, progress_percent)
 	player_marker.position = Vector2(0, marker_y)
 
-	# Update progress text
-	progress_label.text = "Journey: %d%% complete" % [int(progress_percent * 100)]
+	# Update progress text - heritage framing
+	var journey_name := WorldManager.selected_objective_name
+	progress_label.text = "%s: %d%%" % [journey_name, int(progress_percent * 100)]
 
 	# Calculate remaining distance
-	var remaining := player_ref.global_position.distance_to(END_OASIS_POS)
-	distance_label.text = "%d steps remaining" % [int(remaining / 10)]
+	var remaining := player_ref.global_position.distance_to(target_pos)
+	var steps := int(remaining / 10)
+	distance_label.text = "%d steps remaining" % steps
 
 func _on_close() -> void:
 	visible = false

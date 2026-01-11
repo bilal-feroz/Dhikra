@@ -1,8 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://jyqs7r7vj77e"]
+[gd_scene load_steps=4 format=3 uid="uid://objective_select"]
 
-[ext_resource type="Script" uid="uid://crtk2ahqu1twi" path="res://ui/instructions.gd" id="1_instructions"]
+[ext_resource type="Script" path="res://ui/objective_select.gd" id="1_objective"]
 [ext_resource type="FontFile" uid="uid://cvjjixrtqbbwt" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://cbjevvr0mcms0" path="res://intro.jpeg" id="3_intro"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("2_font")
+font_size = 16
+font_color = Color(0.95, 0.92, 0.85, 1)
+outline_size = 4
+outline_color = Color(0.1, 0.08, 0.05, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_button"]
 line_spacing = 2.0
@@ -11,10 +18,10 @@ font_color = Color(0.95, 0.92, 0.85, 1)
 outline_size = 3
 outline_color = Color(0.1, 0.08, 0.05, 1)
 
-[node name="Instructions" type="CanvasLayer"]
+[node name="ObjectiveSelect" type="CanvasLayer"]
 layer = 3
 visible = false
-script = ExtResource("1_instructions")
+script = ExtResource("1_objective")
 
 [node name="Dimmer" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -25,15 +32,15 @@ color = Color(0, 0, 0, 0.3)
 
 [node name="Panel" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -60.0
-offset_left = 100.0
-offset_right = -100.0
+offset_left = 40.0
+offset_top = 30.0
+offset_right = -40.0
+offset_bottom = -30.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 
 [node name="Background" type="TextureRect" parent="Panel"]
 layout_mode = 1
@@ -46,6 +53,20 @@ texture = ExtResource("3_intro")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="Wash" type="ColorRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.95, 0.93, 0.84, 0.98)
+
 [node name="Margin" type="MarginContainer" parent="Panel"]
 layout_mode = 1
 anchors_preset = 15
@@ -54,52 +75,33 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
 
 [node name="Content" type="VBoxContainer" parent="Panel/Margin"]
 layout_mode = 2
-alignment = 1
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 
-[node name="Buttons" type="HBoxContainer" parent="Panel/Margin/Content"]
+[node name="Title" type="Label" parent="Panel/Margin/Content"]
 layout_mode = 2
-theme_override_constants/separation = 40
-alignment = 1
-
-[node name="Begin" type="TextureButton" parent="Panel/Margin/Content/Buttons"]
-custom_minimum_size = Vector2(140, 36)
-layout_mode = 2
-focus_neighbor_right = NodePath("../Back")
-focus_next = NodePath("../Back")
-
-[node name="Label" type="Label" parent="Panel/Margin/Content/Buttons/Begin"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -60.0
-offset_top = -16.0
-offset_right = 60.0
-offset_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "BEGIN"
-label_settings = SubResource("LabelSettings_button")
+text = "CHOOSE YOUR DESTINATION"
+label_settings = SubResource("LabelSettings_title")
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="Back" type="TextureButton" parent="Panel/Margin/Content/Buttons"]
+[node name="ObjectiveList" type="VBoxContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="BackButton" type="TextureButton" parent="Panel/Margin/Content"]
 custom_minimum_size = Vector2(140, 36)
 layout_mode = 2
-focus_neighbor_left = NodePath("../Begin")
-focus_previous = NodePath("../Begin")
+size_flags_horizontal = 4
 
-[node name="Label" type="Label" parent="Panel/Margin/Content/Buttons/Back"]
+[node name="Label" type="Label" parent="Panel/Margin/Content/BackButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

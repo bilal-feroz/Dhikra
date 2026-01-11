@@ -32,6 +32,7 @@
 [ext_resource type="AudioStream" uid="uid://s446am1odksh" path="res://sfx/ui_button_3.wav" id="30_3yglh"]
 [ext_resource type="PackedScene" uid="uid://cqtqx0vslyudt" path="res://ui/settings.tscn" id="33_x0rmv"]
 [ext_resource type="PackedScene" path="res://ui/instructions.tscn" id="34_instructions"]
+[ext_resource type="PackedScene" uid="uid://objective_select" path="res://ui/objective_select.tscn" id="35_objective"]
 
 [sub_resource type="Curve2D" id="Curve2D_ujgx0"]
 _data = {
@@ -413,3 +414,5 @@ autoplay = "idle"
 [node name="Settings" parent="." instance=ExtResource("33_x0rmv")]
 
 [node name="Instructions" parent="." instance=ExtResource("34_instructions")]
+
+[node name="ObjectiveSelect" parent="." instance=ExtResource("35_objective")]

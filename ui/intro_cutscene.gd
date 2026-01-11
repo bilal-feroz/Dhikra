@@ -3,11 +3,12 @@ extends CanvasLayer
 signal cutscene_finished()
 
 const INTRO_TEXTS := [
-	"The desert stretches endlessly before you...",
-	"Water is life. Without it, the sands will claim you.",
-	"Others have walked this path.\nTheir wisdom echoes in stone.",
-	"The Final Oasis awaits those who persevere.",
-	"Your journey begins now."
+	"In the Rub al-Khali, the Empty Quarter,\nour ancestors learned to read the land.",
+	"They called it Farasat Al-Sahraa—\nDesert Intuition.",
+	"The stars guided them. The tracks told stories.\nThe sand itself whispered secrets.",
+	"Water is not just survival.\nIt is trust. It is hospitality. It is honor.",
+	"Now you must walk their path.\nListen. Observe. Remember.",
+	"Your Dhikra—your memory—\nwill echo for those who follow."
 ]
 
 @onready var text_label: Label = $Panel/TextLabel

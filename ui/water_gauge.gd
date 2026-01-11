@@ -23,6 +23,10 @@ var max_water_level := 251.0
 
 var has_unused_flasks := false
 
+# Low water warning system
+var is_critical := false
+var pulse_tween: Tween = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
@@ -43,13 +47,22 @@ func _on_player_water_change(
 	total_water: float,
 	_water_delta: float,
 	heat_intensity: int) -> void:
-	
+
 	var percentage := (minf(total_water, 100.0) / 100.0)
 	water_level.size.x = percentage * max_water_level
-	
+
 	var near_death: bool = percentage < 0.25 and not has_unused_flasks
 	unhealthy_bubble.visible = near_death
 	healthy_bubble.visible = not near_death
+
+	# Critical water warning - pulsing red effect
+	var now_critical := percentage < 0.20 and not has_unused_flasks
+	if now_critical and not is_critical:
+		is_critical = true
+		_start_critical_pulse()
+	elif not now_critical and is_critical:
+		is_critical = false
+		_stop_critical_pulse()
 	
 	# Check if intensity changed for arrows
 	if current_intensity != heat_intensity:
@@ -77,15 +90,26 @@ func _on_player_water_change(
 
 func _on_player_flasks_changed(unused: int, _total: int) -> void:
 	has_unused_flasks = unused > 0
-	
+
 	if has_unused_flasks:
 		water_level.color = fill_water_healthy
 		background_bar.color = bg_water_healthy
 	else:
-		# TODO: consider strobing the water level when unhealthy
-		# below a certain amount
 		water_level.color = fill_water_healthy
 		background_bar.color = bg_water_unhealthy
-		
-	
-	
+
+
+func _start_critical_pulse() -> void:
+	if pulse_tween:
+		pulse_tween.kill()
+	pulse_tween = create_tween().set_loops()
+	pulse_tween.tween_property(water_level, "modulate", Color(1.5, 0.5, 0.5, 1.0), 0.3)
+	pulse_tween.tween_property(water_level, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.3)
+
+
+func _stop_critical_pulse() -> void:
+	if pulse_tween:
+		pulse_tween.kill()
+		pulse_tween = null
+	water_level.modulate = Color(1.0, 1.0, 1.0, 1.0)
+

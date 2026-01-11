@@ -2,16 +2,16 @@ extends CanvasLayer
 
 const TUTORIALS := {
 	"SHOVEL": {
-		"title": "SHOVEL FOUND",
-		"text": "You found a shovel!\n\nPress E to DIG and unearth hidden water.\nPress R to SENSE water nearby.\n\nLook for ripples in the sand."
+		"title": "ANCESTRAL TOOL",
+		"text": "You found a shovel!\n\nThe Bedouin knew: water hides beneath.\nPress E to DIG for hidden sources.\nPress R to SENSE water nearby.\n\nWatch for ripples - the desert speaks."
 	},
 	"FLASK": {
-		"title": "FLASK FOUND",
-		"text": "You found a water flask!\n\nFlasks automatically save you when\nwater runs out.\n\nRefill flasks by resting at an oasis."
+		"title": "WATER VESSEL",
+		"text": "You found a qirbah (water flask)!\n\nFlasks save you when water runs out.\nThis is the Bedouin way - always prepared.\n\nRefill at an oasis. Guard it well."
 	},
 	"RAIN": {
-		"title": "RAIN ABILITY",
-		"text": "You can summon rain from clouds!\n\nPress Q near a cloud to make it rain.\nRain creates temporary water sources.\n\nYou have 3 uses - choose wisely."
+		"title": "CLOUD BLESSING",
+		"text": "The ancestors prayed for rain.\nYou can call it forth.\n\nPress Q near a cloud to summon rain.\nWater sources appear where it falls.\n\nThree blessings only - use wisely."
 	}
 }
 

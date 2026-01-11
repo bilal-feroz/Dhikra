@@ -1,15 +1,15 @@
-[gd_scene load_steps=32 format=3 uid="uid://dg685leglcy4e"]
+[gd_scene load_steps=41 format=3 uid="uid://dg685leglcy4e"]
 
 [ext_resource type="PackedScene" uid="uid://50v8sxikq02p" path="res://ui/water_gauge.tscn" id="1_qrhh3"]
 [ext_resource type="PackedScene" uid="uid://dic8xj22l5wul" path="res://world.tscn" id="1_w7p1e"]
-[ext_resource type="Script" path="res://ui/screen_wipe.gd" id="1_wa3t1"]
-[ext_resource type="Script" path="res://game.gd" id="1_xyfbp"]
+[ext_resource type="Script" uid="uid://brq4fpr7q34tv" path="res://ui/screen_wipe.gd" id="1_wa3t1"]
+[ext_resource type="Script" uid="uid://dy5lymhm0wcy6" path="res://game.gd" id="1_xyfbp"]
 [ext_resource type="PackedScene" uid="uid://8u45aqgregkk" path="res://ui/flask_bar.tscn" id="2_4mwnd"]
-[ext_resource type="Script" path="res://ui/move_hint_display.gd" id="5_14o7t"]
-[ext_resource type="Script" path="res://ui/old_man_hint.gd" id="5_old_man"]
+[ext_resource type="Script" uid="uid://ccfbu46r0i6af" path="res://ui/move_hint_display.gd" id="5_14o7t"]
+[ext_resource type="Script" uid="uid://cc12ptuy3a6n3" path="res://ui/old_man_hint.gd" id="5_old_man"]
 [ext_resource type="Texture2D" uid="uid://bx8847wwmrxi2" path="res://ui/wasd_layout.png" id="6_a42a4"]
 [ext_resource type="Texture2D" uid="uid://co3eb6fdcrd2n" path="res://ui/screen_wipe_sand_particles.png" id="6_jhg2m"]
-[ext_resource type="Script" path="res://ui/action_bar.gd" id="6_uhwyv"]
+[ext_resource type="Script" uid="uid://chinfbv6f2u6i" path="res://ui/action_bar.gd" id="6_uhwyv"]
 [ext_resource type="Texture2D" uid="uid://c1yttn7wiksst" path="res://ui/key_e.png" id="7_536ju"]
 [ext_resource type="FontFile" uid="uid://cvjjixrtqbbwt" path="res://Kenney Mini Square Mono.ttf" id="8_h2kua"]
 [ext_resource type="Texture2D" uid="uid://bbwdbnaqoovsc" path="res://ui/key_r.png" id="8_hc3cf"]
@@ -17,17 +17,19 @@
 [ext_resource type="PackedScene" uid="uid://cqtqx0vslyudt" path="res://ui/settings.tscn" id="12_sb374"]
 [ext_resource type="Texture2D" uid="uid://cr03odgbc2to7" path="res://ui/comment_tutorial.png" id="15_5q61w"]
 [ext_resource type="Texture2D" uid="uid://b2avf7hr2rk04" path="res://ui/comment_setup.png" id="15_k1706"]
-[ext_resource type="Script" path="res://ui/comment_setup.gd" id="15_rcuxb"]
+[ext_resource type="Script" uid="uid://cgwwaxxrljvs" path="res://ui/comment_setup.gd" id="15_rcuxb"]
 [ext_resource type="LabelSettings" uid="uid://cqgxpfvbk7622" path="res://ui/dialog_label_font.tres" id="16_quafi"]
 [ext_resource type="PackedScene" uid="uid://bnls1g8atepgu" path="res://ui/word_button.tscn" id="18_dnsfe"]
 [ext_resource type="Texture2D" uid="uid://bu2b4b604iw82" path="res://ui/comment_template_button.png" id="20_iusmf"]
 [ext_resource type="Texture2D" uid="uid://bn007cyc112n2" path="res://ui/comment_full_select.png" id="21_uu4fx"]
-[ext_resource type="PackedScene" uid="uid://c8time_display" path="res://ui/time_display/time_display.tscn" id="22_time"]
+[ext_resource type="PackedScene" path="res://ui/time_display/time_display.tscn" id="22_time"]
 [ext_resource type="PackedScene" path="res://ui/objective_widget.tscn" id="23_objective"]
 [ext_resource type="PackedScene" path="res://ui/world_map.tscn" id="24_worldmap"]
 [ext_resource type="PackedScene" path="res://ui/tutorial_popup.tscn" id="25_tutorial"]
 [ext_resource type="PackedScene" path="res://ui/intro_cutscene.tscn" id="26_cutscene"]
 [ext_resource type="PackedScene" path="res://ui/end_game_summary.tscn" id="27_summary"]
+[ext_resource type="PackedScene" path="res://ui/star_compass.tscn" id="28_starcompass"]
+[ext_resource type="Texture2D" uid="uid://chbmka7m8yj" path="res://ui/deer.png" id="30_36jdj"]
 
 [sub_resource type="Gradient" id="Gradient_ldnr1"]
 interpolation_mode = 2
@@ -99,9 +101,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dhs26"]
 _data = {
-"FadeIn": SubResource("Animation_l4b5d"),
-"FadeOut": SubResource("Animation_jrxw5"),
-"RESET": SubResource("Animation_ehqjt")
+&"FadeIn": SubResource("Animation_l4b5d"),
+&"FadeOut": SubResource("Animation_jrxw5"),
+&"RESET": SubResource("Animation_ehqjt")
 }
 
 [sub_resource type="LabelSettings" id="LabelSettings_xpwmq"]
@@ -177,7 +179,7 @@ flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ScreenWipe"]
 libraries = {
-"": SubResource("AnimationLibrary_dhs26")
+&"": SubResource("AnimationLibrary_dhs26")
 }
 speed_scale = 3.0
 
@@ -188,11 +190,11 @@ layer = 2
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -160.0
-offset_bottom = 40.0
+offset_left = -200.0
+offset_bottom = 56.0
 grow_horizontal = 0
-theme_override_constants/margin_right = 8
 theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
 
 [node name="TimeDisplay" parent="UI/TimeDisplayContainer" instance=ExtResource("22_time")]
 layout_mode = 2
@@ -230,7 +232,7 @@ stretch_mode = 2
 script = ExtResource("5_14o7t")
 
 [node name="Label" type="Label" parent="UI/MarginContainer/MoveHintWASD"]
-layout_mode = 2
+layout_mode = 0
 offset_left = 10.0
 offset_top = 31.0
 offset_right = 58.0
@@ -300,16 +302,25 @@ offset_right = 120.0
 offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Approach the old man to begin your journey"
+text = "Speak with Baba Al-Sahra to learn the old ways"
 label_settings = ExtResource("16_quafi")
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("5_old_man")
 
+[node name="ObjectiveWidget" parent="UI" instance=ExtResource("23_objective")]
+layout_mode = 3
+offset_left = 8.0
+offset_top = 70.0
+offset_right = 158.0
+offset_bottom = 130.0
+
+[node name="StarCompass" parent="UI" instance=ExtResource("28_starcompass")]
+layout_mode = 3
+
 [node name="Settings" parent="." instance=ExtResource("12_sb374")]
 
 [node name="DayNightModulate" type="CanvasModulate" parent="."]
-color = Color(1, 1, 1, 1)
 
 [node name="World" parent="." instance=ExtResource("1_w7p1e")]
 metadata/_edit_lock_ = true
@@ -344,7 +355,7 @@ offset_right = -4.0
 offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Guide other players with a simple phrase."
+text = "Leave your wisdom for those who follow."
 label_settings = ExtResource("16_quafi")
 horizontal_alignment = 1
 autowrap_mode = 2
@@ -442,7 +453,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "TRY"
+text = "SALAM"
 label_settings = ExtResource("16_quafi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -468,7 +479,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "NEED"
+text = "SEEK"
 label_settings = ExtResource("16_quafi")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -537,13 +548,6 @@ clip_text = true
 [node name="FinishCreate" parent="CommentSetup/Preview" instance=ExtResource("18_dnsfe")]
 layout_mode = 1
 
-[node name="ObjectiveWidget" parent="UI" instance=ExtResource("23_objective")]
-anchors_preset = 0
-offset_left = 8.0
-offset_top = 70.0
-offset_right = 158.0
-offset_bottom = 130.0
-
 [node name="WorldMap" parent="." instance=ExtResource("24_worldmap")]
 
 [node name="TutorialPopup" parent="." instance=ExtResource("25_tutorial")]
@@ -551,3 +555,53 @@ offset_bottom = 130.0
 [node name="IntroCutscene" parent="." instance=ExtResource("26_cutscene")]
 
 [node name="EndGameSummary" parent="." instance=ExtResource("27_summary")]
+
+[node name="Deer" type="Sprite2D" parent="."]
+position = Vector2(-423.50006, 1417.5)
+scale = Vector2(0.076171964, 0.06738272)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer2" type="Sprite2D" parent="."]
+position = Vector2(46, 1329.0001)
+scale = Vector2(0.076171964, 0.06738272)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer3" type="Sprite2D" parent="."]
+position = Vector2(-195.75003, -282.25003)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer4" type="Sprite2D" parent="."]
+position = Vector2(-212, -474)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer5" type="Sprite2D" parent="."]
+position = Vector2(69, -423)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer6" type="Sprite2D" parent="."]
+position = Vector2(-431, -286)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer7" type="Sprite2D" parent="."]
+position = Vector2(-286.99997, -908)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer8" type="Sprite2D" parent="."]
+position = Vector2(-115, -1619)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer9" type="Sprite2D" parent="."]
+position = Vector2(-97, -2096)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")
+
+[node name="Deer10" type="Sprite2D" parent="."]
+position = Vector2(-314, -2748)
+scale = Vector2(0.049153704, 0.03857418)
+texture = ExtResource("30_36jdj")

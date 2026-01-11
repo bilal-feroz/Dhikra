@@ -468,10 +468,13 @@ func _process_water_drain(delta: float) -> void:
 	if water_buffs > 0:
 		water_change += water_buffs
 		water_buffs = 0
-		
+
 		var buffed := WATER_ADDED_BUFF.instantiate()
 		buffed.position = buff_start.position
 		add_child(buffed)
+
+		# Blue flash feedback for water gain
+		_water_pickup_flash()
 	
 	current_water += water_change
 	
@@ -485,10 +488,13 @@ func _process_water_drain(delta: float) -> void:
 			unused_flasks,
 			total_flasks
 		)
-		
+
 		var buffed := FLASK_USED_BUFF.instantiate()
 		buffed.position = buff_start.position
 		add_child(buffed)
+
+		# Camera shake feedback for flask use
+		_camera_shake(0.15, 3.0)
 		
 	
 	# Check if we can recharge flasks while in an oasis
@@ -587,6 +593,8 @@ func _on_dust_storm_entered(body: Area2D) -> void:
 
 	if body is DustStormZone:
 		in_dust_storm += 1
+		# Shake camera when entering storm
+		_camera_shake(0.3, 5.0)
 
 func _on_dust_storm_exited(body: Area2D) -> void:
 	if is_remote_player:
@@ -920,3 +928,24 @@ func _on_server_connected(_room: String) -> void:
 	if is_remote_player:
 		return
 	player_needs_action_broadcast = true
+
+
+func _camera_shake(duration: float, intensity: float) -> void:
+	if is_remote_player or not camera_2d:
+		return
+	var shake_tween := create_tween()
+	var shake_count := int(duration / 0.05)
+	for i in range(shake_count):
+		var offset := Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity))
+		shake_tween.tween_property(camera_2d, "offset", offset, 0.05)
+	shake_tween.tween_property(camera_2d, "offset", Vector2.ZERO, 0.05)
+
+
+func _water_pickup_flash() -> void:
+	if is_remote_player:
+		return
+	# Brief blue tint on sprite when picking up water
+	var original_modulate := sprite_2d.modulate
+	sprite_2d.modulate = Color(0.7, 0.9, 1.3, 1.0)
+	var tween := create_tween()
+	tween.tween_property(sprite_2d, "modulate", original_modulate, 0.3)

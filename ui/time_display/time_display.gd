@@ -14,8 +14,12 @@ class_name TimeDisplay
 @onready var time_icon: TextureRect = $HBoxContainer/TimeIcon
 @onready var period_label: Label = $HBoxContainer/PeriodLabel
 @onready var countdown_label: Label = $HBoxContainer/CountdownLabel
+@onready var storm_label: Label = $StormWarningLabel
 
 var current_period: int = -1
+var storm_time_left: float = -1.0
+var night_hint_shown := false
+var storm_pulse_tween: Tween = null
 
 
 func _ready() -> void:
@@ -28,6 +32,12 @@ func _ready() -> void:
 	else:
 		push_warning("TimeDisplay: TimeManager autoload not found")
 		period_label.text = "NO TIME"
+
+	if WorldManager:
+		WorldManager.dust_storm_warning.connect(_on_dust_storm_warning)
+
+	if storm_label:
+		storm_label.visible = false
 
 
 func _on_period_changed(period: int) -> void:
@@ -43,6 +53,10 @@ func _on_period_changed(period: int) -> void:
 				time_icon.texture = moon_texture
 			period_label.text = "NIGHT"
 			period_label.modulate = night_color
+			# Show heritage navigation hint first time night falls
+			if not night_hint_shown:
+				night_hint_shown = true
+				_show_night_hint()
 		TimeManager.Period.DAWN:
 			if sun_texture:
 				time_icon.texture = sun_texture
@@ -66,6 +80,30 @@ func _on_time_tick(_time_of_day: float) -> void:
 		var countdown := _get_time_until_next_period()
 		var next_period := _get_next_period_name()
 		countdown_label.text = "%s in %s" % [next_period, countdown]
+
+
+func _process(delta: float) -> void:
+	if storm_time_left < 0.0 or not storm_label:
+		return
+
+	storm_time_left -= delta
+	if storm_time_left <= 0.0:
+		storm_label.visible = false
+		storm_time_left = -1.0
+		_stop_storm_pulse()
+		return
+
+	storm_label.text = "! HABOOB IN %s - SEEK SHELTER" % _format_seconds(storm_time_left)
+
+
+func _on_dust_storm_warning(time_until: float) -> void:
+	if not storm_label:
+		return
+	storm_time_left = maxf(time_until, 0.0)
+	# Heritage: "Haboob" is the Arabic word for intense sandstorm
+	storm_label.text = "! HABOOB IN %s - SEEK SHELTER" % _format_seconds(storm_time_left)
+	storm_label.visible = true
+	_start_storm_pulse()
 
 
 func _get_time_until_next_period() -> String:
@@ -121,3 +159,48 @@ func _get_next_period_name() -> String:
 		TimeManager.Period.DUSK:
 			return "Night"
 	return "?"
+
+
+func _format_seconds(seconds: float) -> String:
+	var total := maxi(0, int(ceil(seconds)))
+	var mins := total / 60
+	var secs := total % 60
+	return "%d:%02d" % [mins, secs]
+
+
+func _show_night_hint() -> void:
+	# Create a temporary hint label about night navigation
+	var hint := Label.new()
+	hint.text = "The stars guide those who watch - water drains slower at night"
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint.add_theme_font_size_override("font_size", 10)
+	hint.add_theme_color_override("font_color", Color(0.8, 0.8, 1.0, 1.0))
+	hint.modulate.a = 0.0
+	add_child(hint)
+	hint.position = Vector2(-100, 30)
+
+	# Fade in, wait, fade out
+	var tween := create_tween()
+	tween.tween_property(hint, "modulate:a", 1.0, 1.0)
+	tween.tween_interval(4.0)
+	tween.tween_property(hint, "modulate:a", 0.0, 1.0)
+	tween.tween_callback(hint.queue_free)
+
+
+func _start_storm_pulse() -> void:
+	if storm_pulse_tween:
+		storm_pulse_tween.kill()
+	if not storm_label:
+		return
+	# Urgent pulsing red/orange warning
+	storm_pulse_tween = create_tween().set_loops()
+	storm_pulse_tween.tween_property(storm_label, "modulate", Color(1.5, 0.4, 0.3, 1.0), 0.4)
+	storm_pulse_tween.tween_property(storm_label, "modulate", Color(1.0, 0.8, 0.6, 1.0), 0.4)
+
+
+func _stop_storm_pulse() -> void:
+	if storm_pulse_tween:
+		storm_pulse_tween.kill()
+		storm_pulse_tween = null
+	if storm_label:
+		storm_label.modulate = Color(1.0, 1.0, 1.0, 1.0)

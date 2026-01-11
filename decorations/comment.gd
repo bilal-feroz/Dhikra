@@ -4,34 +4,45 @@ class_name Comment
 const PHRASE_LIST := [
 	"PRAISE",
 	"BEWARE",
-	"TRY",
-	"NEED"
+	"SALAM",      # Peace greeting (Arabic)
+	"SEEK"
 ]
 
 const WORD_LIST := [
-	"AQUA",
-	"FRIEND",
-	
-	"HERE",
+	# Water & Survival
+	"WATER",
+	"FLASK",
+	"OASIS",
+	"THIRST",
+
+	# Navigation & Landmarks
+	"NAJM",        # Star (Arabic)
 	"NORTH",
 	"SOUTH",
 	"EAST",
 	"WEST",
-	"AGAIN",
-	
-	"FLASK",
-	"CACTUS",
-	"THIRST",
-	"SUN",
-	"SHOVEL",
-	"DIG",
-	"SCAN",
-	"HOLE",
-	"CLOUD",
+	"GHAF",        # UAE national tree
+	"DUNE",
+
+	# Heritage Elements
+	"FALAJ",       # Traditional irrigation
+	"ORYX",        # National animal
+	"TRACKS",
 	"SHADE",
-	"OASIS",
-	"PATH",
+	"TRAVELER",
+
+	# Actions & States
+	"DIG",
+	"SENSE",
+	"REST",
+	"PATIENCE",
+	"HOPE",
+
+	# Dangers
+	"STORM",
 	"DEATH",
+	"HEAT",
+	"SUN",
 ]
 
 const COMMENTS = [
