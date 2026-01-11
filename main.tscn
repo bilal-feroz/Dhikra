@@ -364,7 +364,8 @@ text = "START"
 label_settings = ExtResource("27_gnrig")
 
 [node name="Selector2" type="Sprite2D" parent="Menu/Options/Start"]
-position = Vector2(20, 18)
+position = Vector2(80.00002, -4.0000076)
+scale = Vector2(0.37771797, 0.35059133)
 texture = ExtResource("26_qeoya")
 hframes = 10
 vframes = 11
