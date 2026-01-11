@@ -114,6 +114,8 @@ var total_flasks := 0
 var in_oasis := 0
 var in_shade := 0 # Needs to be a counter because there may be overlaps
 var in_dust_storm := 0  # Counter for overlapping dust storms
+var in_rain := 0  # Counter for rain zones
+var pushed_by_storms: Dictionary = {}  # Track which storms have pushed us (storm instance_id -> bool)
 
 var current_dialog: SpeechDetector = null
 
@@ -647,6 +649,82 @@ func _on_dust_storm_exited(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm -= 1
 		in_dust_storm = maxi(in_dust_storm, 0)
+
+func _apply_dust_storm_knockback() -> void:
+	# End oasis position (final destination)
+	const END_OASIS_POS := Vector2(47, 4336)
+
+	# Calculate direction AWAY from end oasis
+	var direction_away = (global_position - END_OASIS_POS).normalized()
+
+	# Calculate knockback distance based on health (current_water)
+	# Less water = farther push
+	# 100% water = 300px, 50% water = 600px, 10% water = 1200px
+	var health_percent = current_water / 100.0
+	var base_knockback = 300.0
+	var knockback_distance = base_knockback * (2.0 - health_percent)
+
+	# Disable player control during knockback
+	being_knocked_back = true
+
+	# Target position after knockback (on the ground)
+	var target_position = global_position + (direction_away * knockback_distance)
+
+	# Create parabolic arc for flying through the air
+	var arc_height = knockback_distance * 0.4  # Arc height is 40% of distance traveled
+
+	# Create main knockback animation
+	var tween = create_tween()
+	tween.set_parallel(true)  # Run animations in parallel
+
+	# Move player horizontally to target
+	tween.tween_property(self, "global_position:x", target_position.x, 0.8).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "global_position:y", target_position.y, 0.8).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+
+	# Rotate sprite for tumbling effect
+	tween.tween_property(sprite_2d, "rotation", randf_range(-PI, PI), 0.8).set_trans(Tween.TRANS_LINEAR)
+
+	# Create separate tween for vertical arc (up then down)
+	var arc_tween = create_tween()
+	arc_tween.tween_property(sprite_2d, "position:y", -arc_height, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	arc_tween.tween_property(sprite_2d, "position:y", 0.0, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
+	# Scale sprite for impact when landing (squash effect relative to original scale)
+	var scale_tween = create_tween()
+	var squash_scale = Vector2(original_sprite_scale.x * 1.3, original_sprite_scale.y * 0.7)
+	scale_tween.tween_property(sprite_2d, "scale", squash_scale, 0.1).set_delay(0.7)  # Squash on landing
+	scale_tween.tween_property(sprite_2d, "scale", original_sprite_scale, 0.1)
+
+	# Wait for all animations to finish, then re-enable control
+	await get_tree().create_timer(0.9).timeout
+	being_knocked_back = false
+	velocity = Vector2.ZERO
+	sprite_2d.rotation = 0.0  # Reset rotation
+	sprite_2d.position = Vector2.ZERO  # Reset sprite position
+	sprite_2d.scale = original_sprite_scale  # Reset scale to normal size
+
+	# Camera shake for dramatic effect
+	_camera_shake(0.8, 30.0)  # Longer shake, more amplitude
+
+	print("Dust storm knockback! Health: ", health_percent * 100, "% Distance: ", knockback_distance, " Arc height: ", arc_height)
+
+func _on_rain_entered(body: Area2D) -> void:
+	if is_remote_player:
+		return
+
+	# Check if entering a rain zone (you'll need to create a RainZone class)
+	if body.is_in_group("rain_zones"):
+		in_rain += 1
+		print("[Rain] Entered rain zone! in_rain = ", in_rain)
+
+func _on_rain_exited(body: Area2D) -> void:
+	if is_remote_player:
+		return
+
+	if body.is_in_group("rain_zones"):
+		in_rain -= 1
+		in_rain = maxi(in_rain, 0)
+		print("[Rain] Exited rain zone! in_rain = ", in_rain)
 
 func _on_dialog_entered(body: Area2D) -> void:
 	if is_remote_player:
