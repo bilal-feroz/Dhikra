@@ -17,6 +17,7 @@ const PLAYER_NO_TOOL = preload("res://sprites/player/player_notool.png")
 
 const ACCEL := 100.0
 const MAX_SPEED := 80.0
+const RUN_SPEED := 140.0
 
 @export var is_remote_player := false
 @export var remote_player_id := ""
@@ -90,6 +91,7 @@ var last_active_direction := Vector2.DOWN
 @export var dowsing := false
 @export var writing := false
 @export var raining := false
+@export var running := false
 @export var exhausted := false
 @export var dead := false
 @export var disconnected := false #only applies to remote players
@@ -227,18 +229,26 @@ func _physics_process(delta: float) -> void:
 		# If we were previously idling
 		if not idling and not is_remote_player:
 			WorldManager.player_idle.emit(false)
-		
+
 		idling = false
 		last_active_direction = direction
-		#speed = minf(speed + ACCEL * ACCEL * delta, MAX_SPEED)
+
+		# Check if running (shift held)
+		if not is_remote_player and Input.is_action_pressed("player_run"):
+			running = true
+			speed = RUN_SPEED
+		else:
+			running = false
+			speed = MAX_SPEED
+
 		velocity = direction * speed
 	else:
 		# If we weren't previously idling
 		if not idling and not is_remote_player:
 			WorldManager.player_idle.emit(true)
 		idling = true
+		running = false
 		velocity = Vector2.ZERO
-		#speed = maxf(0.0, speed - ACCEL * delta)
 		
 	
 
