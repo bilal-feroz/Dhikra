@@ -180,10 +180,13 @@ speed_scale = 3.0
 layer = 2
 
 [node name="TimeDisplayContainer" type="MarginContainer" parent="UI"]
-anchors_preset = 0
-offset_right = 200.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
 offset_bottom = 40.0
-theme_override_constants/margin_left = 8
+grow_horizontal = 0
+theme_override_constants/margin_right = 8
 theme_override_constants/margin_top = 8
 
 [node name="TimeDisplay" parent="UI/TimeDisplayContainer" instance=ExtResource("22_time")]
