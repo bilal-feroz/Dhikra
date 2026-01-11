@@ -1,9 +1,9 @@
-[gd_scene load_steps=138 format=3 uid="uid://dgvotwqi8xwg"]
+[gd_scene load_steps=139 format=3 uid="uid://dgvotwqi8xwg"]
 
-[ext_resource type="Script" path="res://player.gd" id="1_e1cfo"]
+[ext_resource type="Script" uid="uid://cjcshrpo4rlnx" path="res://player.gd" id="1_e1cfo"]
 [ext_resource type="Texture2D" uid="uid://c7si1eqlcmbpp" path="res://sprites/player/player_notool.png" id="2_qte35"]
 [ext_resource type="Texture2D" uid="uid://o4nkn2fbx3ly" path="res://sprites/player/player_shadow.png" id="3_qdbqr"]
-[ext_resource type="Script" path="res://water_sense_glow.gd" id="3_water_glow"]
+[ext_resource type="Script" uid="uid://duo5e1mdfudoc" path="res://water_sense_glow.gd" id="3_water_glow"]
 [ext_resource type="AudioStream" uid="uid://dw2k3135rlgcb" path="res://sfx/sand_steps_1.wav" id="4_06mgg"]
 [ext_resource type="AudioStream" uid="uid://deg7f32o2aej8" path="res://sfx/sand_steps_2.wav" id="5_07gwn"]
 [ext_resource type="AudioStream" uid="uid://oadqeu8s02l5" path="res://sfx/sand_steps_3.wav" id="6_b416t"]
@@ -531,20 +531,20 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_djc75"]
 _data = {
-"DeathDown": SubResource("Animation_jjatk"),
-"ExhaleDown": SubResource("Animation_v27hb"),
-"ExhaleUp": SubResource("Animation_cbhgp"),
-"IdleDown": SubResource("Animation_q3sry"),
-"IdleUp": SubResource("Animation_xv41s"),
-"RESET": SubResource("Animation_v457y"),
-"RunDown": SubResource("Animation_waqnn"),
-"RunLeft": SubResource("Animation_okb0e"),
-"RunRight": SubResource("Animation_k8yte"),
-"RunUp": SubResource("Animation_1algh"),
-"WaterDowsing": SubResource("Animation_0wqry"),
-"dig_left": SubResource("Animation_36c2p"),
-"dig_right": SubResource("Animation_72aof"),
-"inscribing": SubResource("Animation_hi03k")
+&"DeathDown": SubResource("Animation_jjatk"),
+&"ExhaleDown": SubResource("Animation_v27hb"),
+&"ExhaleUp": SubResource("Animation_cbhgp"),
+&"IdleDown": SubResource("Animation_q3sry"),
+&"IdleUp": SubResource("Animation_xv41s"),
+&"RESET": SubResource("Animation_v457y"),
+&"RunDown": SubResource("Animation_waqnn"),
+&"RunLeft": SubResource("Animation_okb0e"),
+&"RunRight": SubResource("Animation_k8yte"),
+&"RunUp": SubResource("Animation_1algh"),
+&"WaterDowsing": SubResource("Animation_0wqry"),
+&"dig_left": SubResource("Animation_36c2p"),
+&"dig_right": SubResource("Animation_72aof"),
+&"inscribing": SubResource("Animation_hi03k")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3ntqn"]
@@ -894,7 +894,8 @@ exhausted = true
 shape = SubResource("CapsuleShape2D_njm32")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(0.99999905, -6.999999)
+scale = Vector2(0.24366699, 0.25)
 texture = ExtResource("2_qte35")
 hframes = 10
 vframes = 12
@@ -903,7 +904,7 @@ frame = 100
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 callback_mode_method = 1
 libraries = {
-"": SubResource("AnimationLibrary_djc75")
+&"": SubResource("AnimationLibrary_djc75")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -912,94 +913,10 @@ callback_mode_method = 1
 tree_root = SubResource("AnimationNodeStateMachine_rg5it")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
-parameters/current_length = 0.80001
-parameters/current_position = 0.571226
-parameters/current_delta = 0.00833333
-parameters/DeathDown/current_length = 0.80001
-parameters/DeathDown/current_position = 0.0
-parameters/DeathDown/current_delta = 0.80001
-parameters/Digging/current_length = 1.0
-parameters/Digging/current_position = 1.0
-parameters/Digging/current_delta = 0.00735578
 parameters/Digging/blend_position = -0.247696
-parameters/Digging/0/current_length = 1.0
-parameters/Digging/0/current_position = 1.0
-parameters/Digging/0/current_delta = 0.00735578
-parameters/Digging/1/current_length = null
-parameters/Digging/1/current_position = null
-parameters/Digging/1/current_delta = null
-parameters/End/current_length = null
-parameters/End/current_position = null
-parameters/End/current_delta = null
-parameters/Idle/current_length = 0.0
-parameters/Idle/current_position = 0.0
-parameters/Idle/current_delta = 0.0
-parameters/Idle/End/current_length = 0.0
-parameters/Idle/End/current_position = 0.0
-parameters/Idle/End/current_delta = 0.0
-parameters/Idle/Exhausted/current_length = 0.80001
-parameters/Idle/Exhausted/current_position = 0.0
-parameters/Idle/Exhausted/current_delta = 0.0
 parameters/Idle/Exhausted/blend_position = Vector2(0.142494, -0.94723)
-parameters/Idle/Exhausted/0/current_length = 0.80001
-parameters/Idle/Exhausted/0/current_position = 0.0
-parameters/Idle/Exhausted/0/current_delta = 0.0
-parameters/Idle/Exhausted/1/current_length = 0.80001
-parameters/Idle/Exhausted/1/current_position = 0.0
-parameters/Idle/Exhausted/1/current_delta = 0.0
-parameters/Idle/Exhausted/2/current_length = 0.80001
-parameters/Idle/Exhausted/2/current_position = 0.0
-parameters/Idle/Exhausted/2/current_delta = 0.0
-parameters/Idle/Exhausted/3/current_length = 0.80001
-parameters/Idle/Exhausted/3/current_position = 0.0
-parameters/Idle/Exhausted/3/current_delta = 0.0
-parameters/Idle/Idle/current_length = 0.80001
-parameters/Idle/Idle/current_position = 0.525676
-parameters/Idle/Idle/current_delta = 0.0300353
 parameters/Idle/Idle/blend_position = Vector2(-0.0392157, 0.726872)
-parameters/Idle/Idle/0/current_length = 0.80001
-parameters/Idle/Idle/0/current_position = 0.525676
-parameters/Idle/Idle/0/current_delta = 0.0300353
-parameters/Idle/Idle/1/current_length = 0.80001
-parameters/Idle/Idle/1/current_position = 0.525676
-parameters/Idle/Idle/1/current_delta = 0.0300353
-parameters/Idle/Idle/2/current_length = 0.80001
-parameters/Idle/Idle/2/current_position = 0.525676
-parameters/Idle/Idle/2/current_delta = 0.0300353
-parameters/Idle/Idle/3/current_length = 0.80001
-parameters/Idle/Idle/3/current_position = 0.571958
-parameters/Idle/Idle/3/current_delta = 0.00833333
-parameters/Idle/Start/current_length = 0.0
-parameters/Idle/Start/current_position = 0.0
-parameters/Idle/Start/current_delta = 0.0
-parameters/Movement/current_length = 0.80001
-parameters/Movement/current_position = 0.571226
-parameters/Movement/current_delta = 0.00833333
 parameters/Movement/blend_position = Vector2(-0.446187, 0.629956)
-parameters/Movement/0/current_length = 0.80001
-parameters/Movement/0/current_position = 0.571226
-parameters/Movement/0/current_delta = 0.00833333
-parameters/Movement/1/current_length = 0.80001
-parameters/Movement/1/current_position = 0.571226
-parameters/Movement/1/current_delta = 0.00833333
-parameters/Movement/2/current_length = 0.80001
-parameters/Movement/2/current_position = 0.571226
-parameters/Movement/2/current_delta = 0.00833333
-parameters/Movement/3/current_length = 0.80001
-parameters/Movement/3/current_position = 0.571226
-parameters/Movement/3/current_delta = 0.00833333
-parameters/Respawn/current_length = 0.80001
-parameters/Respawn/current_position = 0.80001
-parameters/Respawn/current_delta = 0.0115956
-parameters/Start/current_length = 0.0
-parameters/Start/current_position = 0.0
-parameters/Start/current_delta = 0.0
-parameters/WaterDowsing/current_length = 1.0
-parameters/WaterDowsing/current_position = 1.0
-parameters/WaterDowsing/current_delta = 0.0126253
-parameters/Writing/current_length = null
-parameters/Writing/current_position = null
-parameters/Writing/current_delta = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -1018,8 +935,6 @@ texture = ExtResource("3_qdbqr")
 z_index = 10
 position = Vector2(0, -8)
 script = ExtResource("3_water_glow")
-detection_range = 500.0
-max_glow_intensity = 1.0
 pulse_speed = 3.0
 
 [node name="ZoneDetector" type="Area2D" parent="."]

@@ -7,35 +7,23 @@ signal switch_menu()
 @onready var bgm_level: HSlider = $VBoxContainer/HBoxContainer/BGMLevel
 @onready var sfx_level: HSlider = $VBoxContainer/HBoxContainer2/SFXLevel
 
-@onready var accept_selector: Sprite2D = $Accept/AcceptSelector
-@onready var bgm_selector: Sprite2D = $VBoxContainer/HBoxContainer/BgmSelector
-@onready var sfx_selector: Sprite2D = $VBoxContainer/HBoxContainer2/SfxSelector
-
-
 @onready var accept: TextureButton = $Accept
+@onready var exit: TextureButton = $Exit
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 
 	accept.pressed.connect(_on_accept)
-	
+	exit.pressed.connect(_on_exit)
+
 	# Initialize with the default settings
 	bgm_level.value = SoundManager.bgm_level
 	sfx_level.value = SoundManager.sfx_level
 	_on_volume_changed(bgm_level.value, "BGM")
 	_on_volume_changed(sfx_level.value, "SFX")
-	
+
 	bgm_level.value_changed.connect(_on_volume_changed.bind("BGM"))
 	sfx_level.value_changed.connect(_on_volume_changed.bind("SFX"))
-
-	bgm_level.focus_entered.connect(_show_selector.bind(bgm_selector))
-	bgm_level.mouse_entered.connect(_show_selector.bind(bgm_selector))
-	
-	sfx_level.focus_entered.connect(_show_selector.bind(sfx_selector))
-	sfx_level.mouse_entered.connect(_show_selector.bind(sfx_selector))
-	
-	accept.focus_entered.connect(_show_selector.bind(accept_selector))
-	accept.mouse_entered.connect(_show_selector.bind(accept_selector))
 
 func grab() -> void:
 	bgm_level.grab_focus()
@@ -55,19 +43,6 @@ func _on_accept() -> void:
 	sfx_ui.play()
 	switch_menu.emit()
 
-func _show_selector(selector: Sprite2D) -> void:
-	selector.visible = true
+func _on_exit() -> void:
 	sfx_ui.play()
-	
-	if accept_selector == selector:
-		accept.grab_focus()
-		sfx_selector.visible = false
-		bgm_selector.visible = false
-	elif bgm_selector == selector:
-		bgm_level.grab_focus()
-		sfx_selector.visible = false
-		accept_selector.visible = false
-	else:
-		sfx_level.grab_focus()
-		bgm_selector.visible = false
-		accept_selector.visible = false
+	get_tree().change_scene_to_file("res://main.tscn")

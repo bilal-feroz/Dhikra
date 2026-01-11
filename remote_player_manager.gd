@@ -30,4 +30,3 @@ func _on_player_left(_room: String, player: String) -> void:
 		print("Player left the game: ", player)
 		player_lookups[player].remote_left()
 		player_lookups.erase(player)
-
