@@ -50,6 +50,12 @@ func _spawn_storm_on_player() -> void:
 	print("!!! DUST STORM SPAWNED RIGHT ON YOU at: ", storm.global_position)
 	print("Player position: ", player.global_position)
 
+	# Auto-remove after duration - IMMEDIATE removal, no fade
+	await get_tree().create_timer(storm_duration).timeout
+	if is_instance_valid(storm):
+		storm.queue_free()
+	active_storms.erase(storm)
+
 func _spawn_storm_near_player() -> void:
 	if active_storms.size() >= max_active_storms:
 		return
@@ -74,13 +80,9 @@ func _spawn_storm_near_player() -> void:
 
 	print("DUST STORM SPAWNED at: ", storm.global_position, " (Player at: ", player.global_position, ")")
 
-	# Auto-remove after duration
+	# Auto-remove after duration - IMMEDIATE removal, no fade
 	await get_tree().create_timer(storm_duration).timeout
 	if is_instance_valid(storm):
-		# Fade out
-		var tween = create_tween()
-		tween.tween_property(storm, "modulate:a", 0.0, 2.0)
-		await tween.finished
 		storm.queue_free()
 	active_storms.erase(storm)
 

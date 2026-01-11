@@ -49,7 +49,7 @@ func _ready() -> void:
 	var particles = CPUParticles2D.new()
 	particles.emitting = true
 	particles.amount = 500  # Tons of particles for full screen
-	particles.lifetime = 4.0  # Longer lifetime
+	particles.lifetime = 1.5  # Shorter lifetime so they disappear quickly when storm ends
 	particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
 	particles.emission_sphere_radius = 3000.0  # GIGANTIC emission area
 	particles.direction = Vector2(1, 0)

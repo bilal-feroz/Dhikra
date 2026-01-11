@@ -211,8 +211,8 @@ autostart = true
 [node name="DustStormSpawner" type="Node2D" parent="."]
 y_sort_enabled = true
 script = ExtResource("21_spawner")
-spawn_interval = 20.0
-storm_duration = 60.0
+spawn_interval = 40.0
+storm_duration = 20.0
 max_active_storms = 2
 min_spawn_distance = 150.0
 max_spawn_distance = 400.0
