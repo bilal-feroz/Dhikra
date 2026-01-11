@@ -31,8 +31,8 @@
 [ext_resource type="AudioStream" uid="uid://bxx5ixjmn4226" path="res://sfx/ui_button_2.wav" id="29_7gkm3"]
 [ext_resource type="AudioStream" uid="uid://s446am1odksh" path="res://sfx/ui_button_3.wav" id="30_3yglh"]
 [ext_resource type="PackedScene" uid="uid://cqtqx0vslyudt" path="res://ui/settings.tscn" id="33_x0rmv"]
-[ext_resource type="PackedScene" path="res://ui/instructions.tscn" id="34_instructions"]
-[ext_resource type="PackedScene" uid="uid://objective_select" path="res://ui/objective_select.tscn" id="35_objective"]
+[ext_resource type="PackedScene" uid="uid://jyqs7r7vj77e" path="res://ui/instructions.tscn" id="34_instructions"]
+[ext_resource type="PackedScene" path="res://ui/objective_select.tscn" id="35_objective"]
 
 [sub_resource type="Curve2D" id="Curve2D_ujgx0"]
 _data = {
@@ -163,8 +163,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.55, 0.5, 0.42, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.3, 0.27, 0.22, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
@@ -175,8 +175,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
-bg_color = Color(0.3, 0.27, 0.22, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.55, 0.5, 0.42, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
@@ -474,8 +474,8 @@ text = "START"
 label_settings = ExtResource("27_gnrig")
 
 [node name="Selector2" type="Sprite2D" parent="Menu/Options/Start"]
-position = Vector2(80.00002, -4.0000076)
-scale = Vector2(0.37771797, 0.35059133)
+position = Vector2(79.999985, 1.0000057)
+scale = Vector2(0.27259168, 0.24318221)
 texture = ExtResource("26_qeoya")
 hframes = 10
 vframes = 11
@@ -607,21 +607,20 @@ text = "Play together on the same network"
 horizontal_alignment = 1
 
 [node name="Spacer1" type="Control" parent="Menu/MultiplayerPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 15)
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
 [node name="IPInput" type="LineEdit" parent="Menu/MultiplayerPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_placeholder_color = Color(0.45, 0.45, 0.45, 1)
 theme_override_colors/caret_color = Color(0, 0, 0, 1)
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/selection_color = Color(0.5, 0.6, 0.8, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_ip_normal")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ip_focus")
-text = ""
 placeholder_text = "Enter Host's IP (192.168.x.x)"
 alignment = 1
 
@@ -629,9 +628,9 @@ alignment = 1
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_placeholder_color = Color(0.45, 0.45, 0.45, 1)
 theme_override_colors/caret_color = Color(0, 0, 0, 1)
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/selection_color = Color(0.5, 0.6, 0.8, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_port_normal")
@@ -641,36 +640,42 @@ placeholder_text = "Port (default: 7777)"
 alignment = 1
 
 [node name="Spacer2" type="Control" parent="Menu/MultiplayerPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
 [node name="HostButton" type="Button" parent="Menu/MultiplayerPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
 theme_override_colors/font_pressed_color = Color(0.9, 0.9, 0.7, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "HOST GAME"
 
 [node name="JoinButton" type="Button" parent="Menu/MultiplayerPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
 theme_override_colors/font_pressed_color = Color(0.9, 0.9, 0.7, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "JOIN GAME"
 
-[node name="Spacer3" type="Control" parent="Menu/MultiplayerPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 15)
+[node name="StatusLabel" type="Label" parent="Menu/MultiplayerPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="BackButton" type="Button" parent="Menu/MultiplayerPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
@@ -679,38 +684,9 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
 text = "BACK"
-
-[node name="StatusLabel" type="ColorRect" parent="Menu"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -60.0
-offset_right = 250.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0, 0, 0, 0)
-
-[node name="Label" type="Label" parent="Menu/StatusLabel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 18
-text = ""
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Settings" parent="." instance=ExtResource("33_x0rmv")]
 

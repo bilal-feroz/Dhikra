@@ -1,6 +1,7 @@
 extends Node2D
 
 const PLAYER = preload("res://player.tscn")
+@onready var network_manager: Node = get_node_or_null("/root/NetworkManager")
 
 # Player Name -> Player Object
 var player_lookups: Dictionary = {}
@@ -12,9 +13,9 @@ func _ready() -> void:
 	Playroom.player_left.connect(_on_player_left)
 
 	# LAN multiplayer
-	if NetworkManager.is_multiplayer:
-		NetworkManager.player_spawned.connect(_on_lan_player_spawned)
-		NetworkManager.player_despawned.connect(_on_lan_player_despawned)
+	if network_manager and network_manager.is_multiplayer:
+		network_manager.player_spawned.connect(_on_lan_player_spawned)
+		network_manager.player_despawned.connect(_on_lan_player_despawned)
 
 		# If we're the client (not host), spawn a remote player for the host
 		if not multiplayer.is_server():
@@ -56,8 +57,8 @@ func _on_lan_player_despawned(peer_id: int) -> void:
 		player_lookups[player_key].remote_left()
 		player_lookups.erase(player_key)
 
-	if peer_id in NetworkManager.remote_players:
-		NetworkManager.remote_players.erase(peer_id)
+	if network_manager and peer_id in network_manager.remote_players:
+		network_manager.remote_players.erase(peer_id)
 
 func _spawn_lan_player(peer_id: int) -> void:
 	# Don't spawn ourselves
@@ -86,5 +87,6 @@ func _spawn_lan_player(peer_id: int) -> void:
 
 	add_child(spawn)
 	player_lookups[player_key] = spawn
-	NetworkManager.remote_players[peer_id] = spawn
+	if network_manager:
+		network_manager.remote_players[peer_id] = spawn
 	print("[RemotePlayerManager] Remote player added to scene: ", peer_id)
