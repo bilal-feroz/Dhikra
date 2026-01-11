@@ -9,6 +9,9 @@ var is_host := false
 # Track spawned remote players
 var remote_players := {}
 
+# Local player reference (set by player when ready)
+var local_player = null
+
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -31,20 +34,26 @@ func _on_peer_disconnected(id: int) -> void:
 		remote_players[id].queue_free()
 		remote_players.erase(id)
 
-@rpc("any_peer", "call_local")
-func spawn_player(peer_id: int, spawn_position: Vector2) -> void:
-	print("[Network] Spawning player for peer: ", peer_id)
+# Called by local player to broadcast position to all peers
+func broadcast_position(pos: Vector2, velocity: Vector2) -> void:
+	if not is_multiplayer:
+		return
 
-# Sync player position to all clients
+	# Send to all other peers
+	rpc("sync_player_position", multiplayer.get_unique_id(), pos, velocity)
+
+# Receive position updates from other players
 @rpc("any_peer", "unreliable")
-func sync_player_position(peer_id: int, pos: Vector2, animation_state: String) -> void:
+func sync_player_position(peer_id: int, pos: Vector2, vel: Vector2) -> void:
+	# Don't apply to ourselves
+	if peer_id == multiplayer.get_unique_id():
+		return
+
 	if peer_id in remote_players:
 		remote_players[peer_id].global_position = pos
-		# Update animation state if needed
-
-# Sync player actions (dig, dowse, etc)
-@rpc("any_peer", "call_local")
-func sync_player_action(peer_id: int, action: String, pos: Vector2) -> void:
-	if peer_id in remote_players:
-		# Trigger action animation on remote player
-		pass
+		# Set velocity for animation
+		if vel.length() > 0:
+			remote_players[peer_id].last_active_direction = vel.normalized()
+			remote_players[peer_id].idling = false
+		else:
+			remote_players[peer_id].idling = true

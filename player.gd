@@ -132,6 +132,7 @@ func _ready() -> void:
 	# Add to players group so dust storm spawner can find us
 	if not is_remote_player:
 		add_to_group("players")
+		add_to_group("local_player")  # For LAN multiplayer spawning
 
 	# Create fullscreen dust storm overlay
 	if not is_remote_player:
@@ -283,7 +284,10 @@ func _physics_process(delta: float) -> void:
 	# Only the local player will move with physics
 	if not is_remote_player:
 		move_and_slide()
-		
+
+		# Broadcast position for LAN multiplayer
+		if NetworkManager.is_multiplayer:
+			NetworkManager.broadcast_position(global_position, velocity)
 
 	var can_broadcast := player_broadcast_ready and \
 				not player_last_broadcast.is_equal_approx(position)
