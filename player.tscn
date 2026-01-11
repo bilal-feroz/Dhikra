@@ -798,6 +798,9 @@ graph_offset = Vector2(140, -100)
 [sub_resource type="CircleShape2D" id="CircleShape2D_i4c62"]
 radius = 7.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_rain"]
+radius = 15.0
+
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_i2k00"]
 streams_count = 6
 stream_0/stream = ExtResource("4_06mgg")
@@ -971,6 +974,13 @@ collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DustStormDetector"]
 shape = SubResource("CircleShape2D_i4c62")
+
+[node name="RainDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RainDetector"]
+shape = SubResource("CircleShape2D_rain")
 
 [node name="WestDig" type="Marker2D" parent="."]
 position = Vector2(-9, 3)

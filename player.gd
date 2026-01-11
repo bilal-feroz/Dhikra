@@ -41,6 +41,7 @@ var last_received_bundle: Array[Playroom.PlayerActionData] = []
 @onready var power_up_detector: Area2D = $PowerUpDetector
 @onready var dialog_detector: Area2D = $DialogDetector
 @onready var dust_storm_detector: Area2D = $DustStormDetector
+@onready var rain_detector: Area2D = $RainDetector
 @onready var broadcast_position_timer: Timer = $BroadcastPositionTimer
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var camera_2d: Camera2D = $Camera2D
@@ -111,6 +112,7 @@ var total_flasks := 0
 var in_oasis := 0
 var in_shade := 0 # Needs to be a counter because there may be overlaps
 var in_dust_storm := 0  # Counter for overlapping dust storms
+var in_rain := 0  # Counter for overlapping rain zones
 
 var current_dialog: SpeechDetector = null
 
@@ -168,6 +170,9 @@ func _ready() -> void:
 	dust_storm_detector.area_entered.connect(_on_dust_storm_entered)
 	dust_storm_detector.area_exited.connect(_on_dust_storm_exited)
 
+	rain_detector.area_entered.connect(_on_rain_entered)
+	rain_detector.area_exited.connect(_on_rain_exited)
+
 	dialog_detector.area_entered.connect(_on_dialog_entered)
 	dialog_detector.area_exited.connect(_on_dialog_exited)
 	
@@ -185,6 +190,7 @@ func reset_state() -> void:
 	unused_flasks = total_flasks
 	in_oasis = 0
 	in_shade = 0
+	in_rain = 0
 	dead = false
 	exhausted = false
 	idling = false
@@ -226,6 +232,10 @@ func _physics_process(delta: float) -> void:
 			sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
 			# Fade in screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.5, delta * 3.0)
+		elif in_rain > 0:
+			sprite_2d.modulate = Color(0.7, 0.8, 1.0, 1.0)  # Bluish tint when in rain
+			# Fade out screen overlay
+			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.0, delta * 3.0)
 		else:
 			sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
 			# Fade out screen overlay
@@ -445,18 +455,23 @@ func _process_water_drain(delta: float) -> void:
 
 	if in_oasis > 0:
 		intensity = 3  # Oasis always heals at full rate
-	
+
 	# Add booster from being in the shade
 	intensity += in_shade
+
+	# Add slow water replenishment from rain (slower than oasis but helpful)
+	if in_rain > 0:
+		intensity += 1.5  # Gives water slowly when standing in rain
+		print("[Rain Debug] In rain! intensity = ", intensity)
 
 	# Apply dust storm penalty (3x water drain)
 	if in_dust_storm > 0:
 		intensity = intensity * 3.0
 
-	# If we are outside the oasis
+	# If we are outside the oasis and not in rain
 	# don't allow shade boosting to make us positive (healing)
-	if in_oasis <= 0:
-		# outside of an oasis you can't heal so no positive values allowed
+	if in_oasis <= 0 and in_rain <= 0:
+		# outside of an oasis or rain you can't heal so no positive values allowed
 		intensity = min(0, intensity)
 	
 	# One flask should recharge in only 3 seconds of oasis time
@@ -607,6 +622,26 @@ func _on_dust_storm_exited(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm -= 1
 		in_dust_storm = maxi(in_dust_storm, 0)
+
+func _on_rain_entered(body: Area2D) -> void:
+	if is_remote_player:
+		return
+
+	print("[Rain Debug] Rain entered signal received from: ", body.name, " Groups: ", body.get_groups())
+
+	# Check if we entered a rain zone
+	if body.is_in_group("rain_zones"):
+		in_rain += 1
+		print("[Rain Debug] Now in rain! in_rain = ", in_rain)
+
+func _on_rain_exited(body: Area2D) -> void:
+	if is_remote_player:
+		return
+
+	# Check if we left a rain zone
+	if body.is_in_group("rain_zones"):
+		in_rain -= 1
+		in_rain = maxi(in_rain, 0)
 
 func _on_dialog_entered(body: Area2D) -> void:
 	if is_remote_player:
@@ -778,15 +813,6 @@ func _anim_rain_started(rain_position: Vector2 = Vector2.ZERO) -> void:
 		var rain_effect = RAIN_EFFECT.instantiate()
 		rain_effect.global_position = rain_position + Vector2(0, -100)
 		get_parent().add_child(rain_effect)
-
-		# Spawn 3-5 small water sources in a circle around the rain position (below cloud)
-		var num_sources = randi_range(3, 5)
-		for i in range(num_sources):
-			var angle = (i / float(num_sources)) * TAU
-			var offset = Vector2(cos(angle), sin(angle)) * 50.0
-			var water = WATER_SOURCE.instantiate()
-			water.global_position = rain_position + offset
-			get_parent().add_child(water)
 
 		# Play water sound effect (reuse water refill sound)
 		water_refill.play()
