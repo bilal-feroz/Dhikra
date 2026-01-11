@@ -4,9 +4,12 @@ class_name DustStormZone
 @export var storm_intensity: float = 2.0  # Multiplier for water drain
 
 func _ready() -> void:
+	print("!!! DUST STORM ZONE _ready() called at position: ", global_position)
 	collision_layer = 16  # Layer 16 so DustStormDetector can see it
 	collision_mask = 1
 	add_to_group("dust_storms")
+
+	print("Creating dust storm visual components...")
 
 	# Create circular storm area - MUCH BIGGER NOW
 	var shape = CircleShape2D.new()
@@ -44,6 +47,7 @@ func _ready() -> void:
 
 	# Add dust particles
 	var particles = CPUParticles2D.new()
+	particles.emitting = true  # CRITICAL FIX: Make particles actually emit!
 	particles.amount = 100
 	particles.lifetime = 2.0
 	particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
@@ -58,8 +62,23 @@ func _ready() -> void:
 	particles.color = Color(0.7, 0.6, 0.4, 0.7)
 	particles.z_index = 4
 	add_child(particles)
+	print("Particles created and EMITTING!")
 
-	# Animate in
-	modulate.a = 0.0
-	var tween = create_tween()
-	tween.tween_property(self, "modulate:a", 1.0, 2.0)
+	# SHOW IMMEDIATELY - NO FADE IN
+	modulate.a = 1.0
+
+	# Add a bright colored sprite as backup visual
+	var sprite = Sprite2D.new()
+	var texture = PlaceholderTexture2D.new()
+	texture.size = Vector2(600, 600)
+	sprite.texture = texture
+	sprite.modulate = Color(1.0, 0.5, 0.0, 0.8)  # Bright orange
+	sprite.z_index = 100  # On top of EVERYTHING
+	add_child(sprite)
+
+	print("!!! DUST STORM ZONE FULLY CREATED AND VISIBLE!")
+	print("Storm position: ", global_position)
+	print("Storm has ", get_child_count(), " children")
+	print("Visual polygon color: ", visual.color)
+	print("Label text: ", label.text)
+	print("Sprite created with size 600x600 at z_index 100")

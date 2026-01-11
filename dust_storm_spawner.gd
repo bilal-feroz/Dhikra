@@ -13,15 +13,19 @@ var active_storms: Array[DustStormZone] = []
 var player: Player = null
 
 func _ready() -> void:
+	print("=== DUST STORM SPAWNER READY ===")
+
 	# Find the player
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(2.0).timeout
 	var players = get_tree().get_nodes_in_group("players")
+	print("Found ", players.size(), " players")
 	if players.size() > 0:
 		player = players[0]
+		print("Player found at: ", player.global_position)
 
-	# Spawn first storm VERY close so it's immediately visible
-	await get_tree().create_timer(0.5).timeout
-	_spawn_storm_near_player()
+	# Spawn first storm RIGHT ON TOP OF PLAYER so you CANNOT miss it
+	await get_tree().create_timer(1.0).timeout
+	_spawn_storm_on_player()
 
 	# Set up timer for periodic spawning
 	var timer = Timer.new()
@@ -29,6 +33,22 @@ func _ready() -> void:
 	timer.timeout.connect(_spawn_storm_near_player)
 	timer.autostart = true
 	add_child(timer)
+
+func _spawn_storm_on_player() -> void:
+	print("=== SPAWNING STORM ON PLAYER ===")
+	if player == null:
+		print("ERROR: Player is null!")
+		return
+
+	var storm = STORM_ZONE.instantiate()
+	# Spawn EXACTLY where player is standing - impossible to miss
+	storm.global_position = player.global_position
+
+	get_parent().add_child(storm)
+	active_storms.append(storm)
+
+	print("!!! DUST STORM SPAWNED RIGHT ON YOU at: ", storm.global_position)
+	print("Player position: ", player.global_position)
 
 func _spawn_storm_near_player() -> void:
 	if active_storms.size() >= max_active_storms:

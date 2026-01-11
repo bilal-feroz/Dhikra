@@ -375,22 +375,6 @@ libraries = {
 }
 autoplay = "idle"
 
-[node name="Label2" type="Label" parent="Menu/Options/Start"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -313.0
-offset_top = 117.0
-offset_right = -79.0
-offset_bottom = 147.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "MADE BY AWAIZ"
-label_settings = ExtResource("27_gnrig")
-
 [node name="Settings" type="TextureButton" parent="Menu/Options"]
 layout_mode = 2
 texture_normal = SubResource("GradientTexture2D_57tsd")
