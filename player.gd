@@ -255,15 +255,12 @@ func _physics_process(delta: float) -> void:
 			sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
 			# Fade in screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.5, delta * 3.0)
-<<<<<<< Updated upstream
+			# Continuous haptic rumble while in storm
+			Input.start_joy_vibration(0, 0.2, 0.4, 0.15)
 		elif in_rain > 0:
 			sprite_2d.modulate = Color(0.7, 0.8, 1.0, 1.0)  # Bluish tint when in rain
 			# Fade out screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.0, delta * 3.0)
-=======
-			# Continuous haptic rumble while in storm
-			Input.start_joy_vibration(0, 0.2, 0.4, 0.15)
->>>>>>> Stashed changes
 		else:
 			sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
 			# Fade out screen overlay
