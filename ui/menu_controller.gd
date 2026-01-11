@@ -78,12 +78,28 @@ func _on_host_pressed() -> void:
 	multiplayer.multiplayer_peer = peer
 	NetworkManager.setup_multiplayer(true)
 
-	# Get local IP
-	var local_ip = IP.get_local_addresses()[0]
+	# Get local IP - find actual LAN IP, not loopback or IPv6
+	var local_ip = ""
 	for ip in IP.get_local_addresses():
-		if ip.begins_with("192.168.") or ip.begins_with("10."):
-			local_ip = ip
-			break
+		# Skip IPv6 addresses (contain colons)
+		if ":" in ip:
+			continue
+		# Skip loopback
+		if ip.begins_with("127."):
+			continue
+		# Check for private IP ranges
+		if ip.begins_with("192.168.") or ip.begins_with("10.") or ip.begins_with("172."):
+			# For 172, make sure it's in the 172.16-172.31 range
+			if ip.begins_with("172."):
+				var parts = ip.split(".")
+				if parts.size() >= 2:
+					var second_octet = int(parts[1])
+					if second_octet >= 16 and second_octet <= 31:
+						local_ip = ip
+						break
+			else:
+				local_ip = ip
+				break
 
 	# Hide inputs and host/join buttons, show only back button
 	ip_input.visible = false
@@ -92,7 +108,10 @@ func _on_host_pressed() -> void:
 	join_btn.visible = false
 	back_btn.visible = true
 
-	status_label.text = "Share this IP with your friend:\n" + local_ip + ":" + str(DEFAULT_PORT) + "\n\nWaiting for player to join..."
+	if local_ip == "":
+		status_label.text = "Error: Could not find LAN IP!\nMake sure you're connected to WiFi/Network"
+	else:
+		status_label.text = "Share this IP with your friend:\n" + local_ip + ":" + str(DEFAULT_PORT) + "\n\nWaiting for player to join..."
 
 func _on_join_pressed() -> void:
 	# Show IP input if not visible
