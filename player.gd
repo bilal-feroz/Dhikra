@@ -97,6 +97,7 @@ var last_active_direction := Vector2.DOWN
 @export var disconnected := false #only applies to remote players
 @export var invulnerable := false
 @export var infinite_water := false
+@export var being_knocked_back := false
 
 var has_shovel := false
 
@@ -111,6 +112,7 @@ var total_flasks := 0
 var in_oasis := 0
 var in_shade := 0 # Needs to be a counter because there may be overlaps
 var in_dust_storm := 0  # Counter for overlapping dust storms
+var pushed_by_storms: Dictionary = {}  # Track which storms have pushed us (storm instance_id -> bool)
 
 var current_dialog: SpeechDetector = null
 
@@ -124,8 +126,19 @@ var recent_footprints: Array[Vector2] = []
 var dust_storm_overlay: ColorRect = null
 var dust_storm_canvas: CanvasLayer = null
 
+# Store the original sprite scale from the scene file
+var original_sprite_scale: Vector2 = Vector2.ZERO
+
 func _ready() -> void:
 	animation_tree.active = true
+
+	# Store original scale from scene file
+	original_sprite_scale = sprite_2d.scale
+
+	# Reset sprite to normal state FIRST
+	sprite_2d.rotation = 0.0
+	sprite_2d.position = Vector2.ZERO
+	sprite_2d.scale = original_sprite_scale
 
 	reset_state()
 
@@ -180,19 +193,28 @@ func reset_state() -> void:
 		# the remote proxy players
 		collision_layer = 0
 		collision_mask = 0
-	
+
 	current_water = 100.0
 	unused_flasks = total_flasks
 	in_oasis = 0
 	in_shade = 0
+	in_dust_storm = 0
+	pushed_by_storms.clear()  # Clear storm knockback tracking on respawn
 	dead = false
 	exhausted = false
 	idling = false
 	digging = false
 	dowsing = false
 	writing = false
+	being_knocked_back = false
 	last_active_direction = Vector2.DOWN
 	speed = MAX_SPEED
+
+	# Reset sprite transformations (if sprite exists)
+	if sprite_2d:
+		sprite_2d.rotation = 0.0
+		sprite_2d.position = Vector2.ZERO
+		sprite_2d.scale = original_sprite_scale if original_sprite_scale != Vector2.ZERO else sprite_2d.scale
 	
 	if not is_remote_player:
 		WorldManager.player_flask_changed.emit(
@@ -237,9 +259,9 @@ func _physics_process(delta: float) -> void:
 	# prevent moving while digging/dowsing/writing
 	if digging or dowsing or writing or raining:
 		return
-	
-	# Don't move while invulnerable (UI menus)
-	if invulnerable:
+
+	# Don't move while invulnerable (UI menus) or being knocked back
+	if invulnerable or being_knocked_back:
 		return
 
 	# Get the input direction and handle the movement/deceleration.
@@ -592,6 +614,12 @@ func _on_dust_storm_entered(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm += 1
 
+		# One-time knockback when entering storm
+		var storm_id = body.get_instance_id()
+		if not pushed_by_storms.has(storm_id):
+			pushed_by_storms[storm_id] = true
+			_apply_dust_storm_knockback()
+
 func _on_dust_storm_exited(body: Area2D) -> void:
 	if is_remote_player:
 		return
@@ -599,6 +627,82 @@ func _on_dust_storm_exited(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm -= 1
 		in_dust_storm = maxi(in_dust_storm, 0)
+
+func _apply_dust_storm_knockback() -> void:
+	# End oasis position (final destination)
+	const END_OASIS_POS := Vector2(47, 4336)
+
+	# Calculate direction AWAY from end oasis
+	var direction_away = (global_position - END_OASIS_POS).normalized()
+
+	# Calculate knockback distance based on health (current_water)
+	# Less water = farther push
+	# 100% water = 300px, 50% water = 600px, 10% water = 1200px
+	var health_percent = current_water / 100.0
+	var base_knockback = 300.0
+	var knockback_distance = base_knockback * (2.0 - health_percent)
+
+	# Disable player control during knockback
+	being_knocked_back = true
+
+	# Target position after knockback (on the ground)
+	var target_position = global_position + (direction_away * knockback_distance)
+
+	# Create parabolic arc for flying through the air
+	var arc_height = knockback_distance * 0.4  # Arc height is 40% of distance traveled
+
+	# Create main knockback animation
+	var tween = create_tween()
+	tween.set_parallel(true)  # Run animations in parallel
+
+	# Move player horizontally to target
+	tween.tween_property(self, "global_position:x", target_position.x, 0.8).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "global_position:y", target_position.y, 0.8).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+
+	# Rotate sprite for tumbling effect
+	tween.tween_property(sprite_2d, "rotation", randf_range(-PI, PI), 0.8).set_trans(Tween.TRANS_LINEAR)
+
+	# Create separate tween for vertical arc (up then down)
+	var arc_tween = create_tween()
+	arc_tween.tween_property(sprite_2d, "position:y", -arc_height, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	arc_tween.tween_property(sprite_2d, "position:y", 0.0, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
+	# Scale sprite for impact when landing (squash effect relative to original scale)
+	var scale_tween = create_tween()
+	var squash_scale = Vector2(original_sprite_scale.x * 1.3, original_sprite_scale.y * 0.7)
+	scale_tween.tween_property(sprite_2d, "scale", squash_scale, 0.1).set_delay(0.7)  # Squash on landing
+	scale_tween.tween_property(sprite_2d, "scale", original_sprite_scale, 0.1)
+
+	# Wait for all animations to finish, then re-enable control
+	await get_tree().create_timer(0.9).timeout
+	being_knocked_back = false
+	velocity = Vector2.ZERO
+	sprite_2d.rotation = 0.0  # Reset rotation
+	sprite_2d.position = Vector2.ZERO  # Reset sprite position
+	sprite_2d.scale = original_sprite_scale  # Reset scale to normal size
+
+	# Camera shake for dramatic effect
+	_apply_camera_shake(0.8, 30.0)  # Longer shake, more amplitude
+
+	print("Dust storm knockback! Health: ", health_percent * 100, "% Distance: ", knockback_distance, " Arc height: ", arc_height)
+
+func _apply_camera_shake(duration: float, amplitude: float) -> void:
+	if not camera_2d or is_remote_player:
+		return
+
+	var tween = create_tween()
+	var shake_count = int(duration * 30)  # 30 shakes per second for realistic shake
+
+	# Apply random shake offsets
+	for i in range(shake_count):
+		var shake_offset = Vector2(
+			randf_range(-amplitude, amplitude),
+			randf_range(-amplitude, amplitude)
+		)
+		tween.tween_property(camera_2d, "offset", shake_offset, duration / shake_count)
+
+	# Return camera to normal position
+	tween.tween_property(camera_2d, "offset", Vector2.ZERO, 0.1)
 
 func _on_dialog_entered(body: Area2D) -> void:
 	if is_remote_player:

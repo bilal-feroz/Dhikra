@@ -25,6 +25,10 @@ func _ready() -> void:
 func _on_oasis_left() -> void:
 	if cutscene_shown:
 		return
+	# Skip intro cutscene in multiplayer mode
+	if NetworkManager.is_multiplayer:
+		cutscene_shown = true
+		return
 	# Only show on first time leaving an oasis
 	cutscene_shown = true
 	_show_cutscene()
@@ -33,9 +37,9 @@ func _show_cutscene() -> void:
 	visible = true
 	current_index = 0
 	WorldManager.ui_active.emit(true)
-	dimmer.modulate.a = 0.0
-	text_label.modulate.a = 0.0
-	advance_hint.modulate.a = 0.0
+	dimmer.modulate = Color(1, 1, 1, 0)
+	text_label.modulate = Color(1, 1, 1, 0)
+	advance_hint.modulate = Color(1, 1, 1, 0)
 
 	# Fade in
 	var tween := create_tween()
@@ -45,8 +49,8 @@ func _show_cutscene() -> void:
 func _show_current_text() -> void:
 	is_transitioning = true
 	text_label.text = INTRO_TEXTS[current_index]
-	text_label.modulate.a = 0.0
-	advance_hint.modulate.a = 0.0
+	text_label.modulate = Color(1, 1, 1, 0)
+	advance_hint.modulate = Color(1, 1, 1, 0)
 
 	var tween := create_tween()
 	tween.tween_property(text_label, "modulate:a", 1.0, 0.4)
