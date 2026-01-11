@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://c8co5ocfqmtpt" path="res://oasis-safe-zone.ogg" id="8_843ex"]
 [ext_resource type="Script" path="res://player_deaths_manager.gd" id="19_dbppj"]
 [ext_resource type="PackedScene" uid="uid://cmn5brqbir8ed" path="res://oases/starting_oasis.tscn" id="20_fn41c"]
+[ext_resource type="Script" path="res://dust_storm_spawner.gd" id="21_spawner"]
 
 [sub_resource type="Animation" id="Animation_xxx13"]
 resource_name = "RESET"
@@ -206,6 +207,15 @@ autostart = true
 [node name="InscriptionListFrequency" type="Timer" parent="InscriptionsManager"]
 wait_time = 420.0
 autostart = true
+
+[node name="DustStormSpawner" type="Node2D" parent="."]
+y_sort_enabled = true
+script = ExtResource("21_spawner")
+spawn_interval = 20.0
+storm_duration = 60.0
+max_active_storms = 2
+min_spawn_distance = 150.0
+max_spawn_distance = 400.0
 
 [node name="Player" parent="." instance=ExtResource("1_e1qv5")]
 position = Vector2(35, -29)

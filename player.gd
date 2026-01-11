@@ -121,14 +121,29 @@ var recent_comment_idx: int = -1
 
 var recent_footprints: Array[Vector2] = []
 
+var dust_storm_overlay: ColorRect = null
+var dust_storm_canvas: CanvasLayer = null
+
 func _ready() -> void:
 	animation_tree.active = true
-	
+
 	reset_state()
-	
+
 	# Add to players group so dust storm spawner can find us
 	if not is_remote_player:
 		add_to_group("players")
+
+	# Create fullscreen dust storm overlay
+	if not is_remote_player:
+		dust_storm_canvas = CanvasLayer.new()
+		dust_storm_canvas.layer = 100  # On top of everything
+		add_child(dust_storm_canvas)
+
+		dust_storm_overlay = ColorRect.new()
+		dust_storm_overlay.color = Color(0.7, 0.6, 0.4, 0.0)  # Start invisible
+		dust_storm_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+		dust_storm_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		dust_storm_canvas.add_child(dust_storm_overlay)
 
 	if is_remote_player:
 		camera_2d.enabled = false
@@ -204,11 +219,16 @@ func _physics_process(delta: float) -> void:
 			# TODO: may have missed an update
 		return
 
-	# Apply dust storm visual effect
-	if in_dust_storm > 0:
-		sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
-	else:
-		sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
+	# Apply dust storm visual effect - fullscreen overlay
+	if dust_storm_overlay:
+		if in_dust_storm > 0:
+			sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
+			# Fade in screen overlay
+			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.5, delta * 3.0)
+		else:
+			sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
+			# Fade out screen overlay
+			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.0, delta * 3.0)
 
 	# Always calculate water drain while we are alive
 	_process_water_drain(delta)
@@ -425,9 +445,9 @@ func _process_water_drain(delta: float) -> void:
 	# Add booster from being in the shade
 	intensity += in_shade
 
-	# Apply dust storm penalty (2x water drain)
+	# Apply dust storm penalty (3x water drain)
 	if in_dust_storm > 0:
-		intensity = intensity * 2.0
+		intensity = intensity * 3.0
 
 	# If we are outside the oasis
 	# don't allow shade boosting to make us positive (healing)

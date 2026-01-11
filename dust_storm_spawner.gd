@@ -23,8 +23,8 @@ func _ready() -> void:
 		player = players[0]
 		print("Player found at: ", player.global_position)
 
-	# Spawn first storm RIGHT ON TOP OF PLAYER so you CANNOT miss it
-	await get_tree().create_timer(1.0).timeout
+	# Wait 20 seconds before spawning first storm
+	await get_tree().create_timer(20.0).timeout
 	_spawn_storm_on_player()
 
 	# Set up timer for periodic spawning
