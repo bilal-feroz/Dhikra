@@ -9,6 +9,8 @@ const COMMENT = preload("res://decorations/comment.tscn")
 const FOOTPRINT = preload("res://footprint.tscn")
 const DUG_HOLE = preload("res://dug_hole.tscn")
 const DOWSING_RIPPLE = preload("res://dowsing_ripple.tscn")
+const WATER_SOURCE = preload("res://desert_water_source.tscn")
+const RAIN_EFFECT = preload("res://cloud_rain_effect.tscn")
 
 const PLAYER_HAS_SHOVEL = preload("res://sprites/player/player.png")
 const PLAYER_NO_TOOL = preload("res://sprites/player/player_notool.png")
@@ -37,6 +39,7 @@ var last_received_bundle: Array[Playroom.PlayerActionData] = []
 @onready var shade_detector: Area2D = $ShadeDetector
 @onready var power_up_detector: Area2D = $PowerUpDetector
 @onready var dialog_detector: Area2D = $DialogDetector
+@onready var dust_storm_detector: Area2D = $DustStormDetector
 @onready var broadcast_position_timer: Timer = $BroadcastPositionTimer
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var camera_2d: Camera2D = $Camera2D
@@ -86,6 +89,7 @@ var last_active_direction := Vector2.DOWN
 @export var digging := false
 @export var dowsing := false
 @export var writing := false
+@export var raining := false
 @export var exhausted := false
 @export var dead := false
 @export var disconnected := false #only applies to remote players
@@ -97,10 +101,14 @@ var has_shovel := false
 # Water system
 var current_water := 100.0
 var water_buffs := 0.0
+
+# Cloud rain ability
+var rain_uses_remaining: int = 3
 var unused_flasks := 0
 var total_flasks := 0
 var in_oasis := 0
 var in_shade := 0 # Needs to be a counter because there may be overlaps
+var in_dust_storm := 0  # Counter for overlapping dust storms
 
 var current_dialog: SpeechDetector = null
 
@@ -116,11 +124,15 @@ func _ready() -> void:
 	
 	reset_state()
 	
+	# Add to players group so dust storm spawner can find us
+	if not is_remote_player:
+		add_to_group("players")
+
 	if is_remote_player:
 		camera_2d.enabled = false
 	else:
 		WorldManager.game_started.emit()
-	
+
 	if not is_remote_player:
 		Playroom.server_connected.connect(_on_server_connected)
 		WorldManager.player_respawn.connect(_on_respawn_requested)
@@ -134,7 +146,10 @@ func _ready() -> void:
 	
 	shade_detector.area_entered.connect(_on_shade_entered)
 	shade_detector.area_exited.connect(_on_shade_exited)
-	
+
+	dust_storm_detector.area_entered.connect(_on_dust_storm_entered)
+	dust_storm_detector.area_exited.connect(_on_dust_storm_exited)
+
 	dialog_detector.area_entered.connect(_on_dialog_entered)
 	dialog_detector.area_exited.connect(_on_dialog_exited)
 	
@@ -187,11 +202,17 @@ func _physics_process(delta: float) -> void:
 			# TODO: may have missed an update
 		return
 
+	# Apply dust storm visual effect
+	if in_dust_storm > 0:
+		sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
+	else:
+		sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
+
 	# Always calculate water drain while we are alive
 	_process_water_drain(delta)
-	
+
 	# prevent moving while digging/dowsing/writing
-	if digging or dowsing or writing:
+	if digging or dowsing or writing or raining:
 		return
 	
 	# Don't move while invulnerable (UI menus)
@@ -278,6 +299,10 @@ func _check_player_actions() -> void:
 		elif action == Playroom.ACTION_DOWSING:
 			dowsing = true
 			return
+		elif action == Playroom.ACTION_RAIN:
+			raining = true
+			_anim_rain_started()
+			return
 		elif action == Playroom.ACTION_DIED:
 			die()
 			if remote_tweener != null:
@@ -304,10 +329,21 @@ func _check_player_actions() -> void:
 			current_dialog.advance()
 			return
 		elif has_shovel and Input.is_action_just_pressed("player_dig"):
-			animation_tree["parameters/Digging/blend_position"] = last_active_direction.x
-			digging = true
-			Playroom.set_player_action(Playroom.ACTION_DIGGING, global_position)
-			player_needs_action_broadcast = true
+			# Don't dig if standing on a water source - let the water source handle the interaction
+			var water_sources = get_tree().get_nodes_in_group("water_sources")
+			var on_water_source = false
+			for source in water_sources:
+				if source is DesertWaterSource:
+					var distance = global_position.distance_to(source.global_position)
+					if distance < 25.0 and source.is_available:
+						on_water_source = true
+						break
+
+			if not on_water_source:
+				animation_tree["parameters/Digging/blend_position"] = last_active_direction.x
+				digging = true
+				Playroom.set_player_action(Playroom.ACTION_DIGGING, global_position)
+				player_needs_action_broadcast = true
 			return
 		elif has_shovel and Input.is_action_just_pressed("player_dowse"):
 			dowsing = true
@@ -318,6 +354,18 @@ func _check_player_actions() -> void:
 			writing = true
 			Playroom.set_player_action(Playroom.ACTION_WRITING, global_position)
 			player_needs_action_broadcast = true
+			return
+		elif Input.is_action_just_pressed("player_rain") and rain_uses_remaining > 0:
+			# Find nearby clouds
+			var nearest_cloud = _find_nearest_cloud()
+			if nearest_cloud != null:
+				raining = true
+				rain_uses_remaining -= 1
+				# Get rain position from cloud
+				var rain_position = nearest_cloud.make_it_rain()
+				Playroom.set_player_action(Playroom.ACTION_RAIN, rain_position)
+				player_needs_action_broadcast = true
+				_anim_rain_started(rain_position)  # Pass cloud position for rain
 			return
 
 func die() -> void:
@@ -353,20 +401,24 @@ func _process_water_drain(delta: float) -> void:
 	if invulnerable or infinite_water:
 		return
 	
-	# Start with a base of -3 for the heat burning you
+	# Start with a base of -1.0 for the heat burning you (reduced from -3.0 for better survival)
 	# Milestone 1: Apply time-of-day multiplier (night = slower drain)
 	var time_mult := 1.0
 	if TimeManager:
 		time_mult = TimeManager.get_drain_multiplier()
 
-	var intensity := int(-3.0 * time_mult)
+	var intensity := -1.0 * time_mult
 
 	if in_oasis > 0:
 		intensity = 3  # Oasis always heals at full rate
 	
 	# Add booster from being in the shade
 	intensity += in_shade
-	
+
+	# Apply dust storm penalty (2x water drain)
+	if in_dust_storm > 0:
+		intensity = intensity * 2.0
+
 	# If we are outside the oasis
 	# don't allow shade boosting to make us positive (healing)
 	if in_oasis <= 0:
@@ -491,13 +543,28 @@ func _on_shade_entered(body: Area2D) -> void:
 func _on_shade_exited(body: Area2D) -> void:
 	if is_remote_player:
 		return
-		
+
 	if body is ShadeValue:
 		in_shade -= body.shade_value
 	else:
 		in_shade -= 1
-		
+
 	in_shade = maxi(in_shade, 0)
+
+func _on_dust_storm_entered(body: Area2D) -> void:
+	if is_remote_player:
+		return
+
+	if body is DustStormZone:
+		in_dust_storm += 1
+
+func _on_dust_storm_exited(body: Area2D) -> void:
+	if is_remote_player:
+		return
+
+	if body is DustStormZone:
+		in_dust_storm -= 1
+		in_dust_storm = maxi(in_dust_storm, 0)
 
 func _on_dialog_entered(body: Area2D) -> void:
 	if is_remote_player:
@@ -639,6 +706,51 @@ func _anim_start_writing() -> void:
 func _anim_place_comment() -> void:
 	if not is_remote_player:
 		WorldManager.player_started_writing.emit()
+
+func _find_nearest_cloud():
+	# Find all clouds in the scene
+	var clouds = get_tree().get_nodes_in_group("clouds")
+	var nearest_cloud = null
+	var nearest_distance = 500.0  # Max detection range for clouds (increased from 300 to 500)
+
+	for cloud in clouds:
+		# Skip clouds that have already rained
+		if cloud.has_rained:
+			continue
+
+		var distance = global_position.distance_to(cloud.global_position)
+		if distance < nearest_distance:
+			nearest_distance = distance
+			nearest_cloud = cloud
+
+	return nearest_cloud
+
+func _anim_rain_started(rain_position: Vector2 = Vector2.ZERO) -> void:
+	if not is_remote_player:
+		# If no position provided (remote player), skip spawning
+		if rain_position == Vector2.ZERO:
+			raining = false
+			return
+
+		# Spawn visual rain effect at the cloud position (100 units above rain position)
+		var rain_effect = RAIN_EFFECT.instantiate()
+		rain_effect.global_position = rain_position + Vector2(0, -100)
+		get_parent().add_child(rain_effect)
+
+		# Spawn 3-5 small water sources in a circle around the rain position (below cloud)
+		var num_sources = randi_range(3, 5)
+		for i in range(num_sources):
+			var angle = (i / float(num_sources)) * TAU
+			var offset = Vector2(cos(angle), sin(angle)) * 50.0
+			var water = WATER_SOURCE.instantiate()
+			water.global_position = rain_position + offset
+			get_parent().add_child(water)
+
+		# Play water sound effect (reuse water refill sound)
+		water_refill.play()
+
+		# Reset raining state after short delay
+		raining = false
 
 func _finish_writing_comment(phrase: int, word: int) -> void:
 	recent_comment_idx = (recent_comment_idx + 1) % Playroom.MAX_PLAYER_INSCRIPTIONS

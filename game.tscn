@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://game.gd" id="1_xyfbp"]
 [ext_resource type="PackedScene" uid="uid://8u45aqgregkk" path="res://ui/flask_bar.tscn" id="2_4mwnd"]
 [ext_resource type="Script" path="res://ui/move_hint_display.gd" id="5_14o7t"]
+[ext_resource type="Script" path="res://ui/old_man_hint.gd" id="5_old_man"]
 [ext_resource type="Texture2D" uid="uid://bx8847wwmrxi2" path="res://ui/wasd_layout.png" id="6_a42a4"]
 [ext_resource type="Texture2D" uid="uid://co3eb6fdcrd2n" path="res://ui/screen_wipe_sand_particles.png" id="6_jhg2m"]
 [ext_resource type="Script" path="res://ui/action_bar.gd" id="6_uhwyv"]
@@ -267,6 +268,24 @@ offset_bottom = 36.0
 text = "INSCRIBE"
 label_settings = SubResource("LabelSettings_xpwmq")
 horizontal_alignment = 1
+
+[node name="OldManHint" type="Label" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Approach the old man to begin your journey"
+label_settings = ExtResource("16_quafi")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("5_old_man")
 
 [node name="Settings" parent="." instance=ExtResource("12_sb374")]
 

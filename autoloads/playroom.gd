@@ -7,6 +7,7 @@ const ACTION_MOVE    = "M"
 const ACTION_DIGGING = "G"
 const ACTION_DOWSING = "W"
 const ACTION_WRITING = "T"
+const ACTION_RAIN    = "N"
 const ACTION_DIED    = "D"
 const ACTION_RESPAWN = "R"
 

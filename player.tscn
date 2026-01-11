@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://player.gd" id="1_e1cfo"]
 [ext_resource type="Texture2D" uid="uid://c7si1eqlcmbpp" path="res://sprites/player/player_notool.png" id="2_qte35"]
 [ext_resource type="Texture2D" uid="uid://o4nkn2fbx3ly" path="res://sprites/player/player_shadow.png" id="3_qdbqr"]
+[ext_resource type="Script" path="res://water_sense_glow.gd" id="3_water_glow"]
 [ext_resource type="AudioStream" uid="uid://dw2k3135rlgcb" path="res://sfx/sand_steps_1.wav" id="4_06mgg"]
 [ext_resource type="AudioStream" uid="uid://deg7f32o2aej8" path="res://sfx/sand_steps_2.wav" id="5_07gwn"]
 [ext_resource type="AudioStream" uid="uid://oadqeu8s02l5" path="res://sfx/sand_steps_3.wav" id="6_b416t"]
@@ -1013,6 +1014,14 @@ self_modulate = Color(1, 1, 1, 0.392157)
 z_index = -1
 texture = ExtResource("3_qdbqr")
 
+[node name="WaterSenseGlow" type="Node2D" parent="."]
+z_index = 10
+position = Vector2(0, -8)
+script = ExtResource("3_water_glow")
+detection_range = 500.0
+max_glow_intensity = 1.0
+pulse_speed = 3.0
+
 [node name="ZoneDetector" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 8
@@ -1039,6 +1048,13 @@ collision_layer = 0
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DialogDetector"]
+shape = SubResource("CircleShape2D_i4c62")
+
+[node name="DustStormDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DustStormDetector"]
 shape = SubResource("CircleShape2D_i4c62")
 
 [node name="WestDig" type="Marker2D" parent="."]

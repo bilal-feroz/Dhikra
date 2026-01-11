@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://water_source_001"]
+
+[ext_resource type="Script" path="res://desert_water_source.gd" id="1_water"]
+[ext_resource type="Texture2D" uid="uid://c1yttn7wiksst" path="res://ui/key_e.png" id="2_hint_key"]
+[ext_resource type="Texture2D" uid="uid://cwfeedhqyqmos" path="res://sprites/items/active_watering_hole.png" id="3_water_sprite"]
+[ext_resource type="FontFile" uid="uid://cvjjixrtqbbwt" path="res://Kenney Mini Square Mono.ttf" id="4_font"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_water"]
+radius = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_water"]
+font = ExtResource("4_font")
+font_size = 8
+font_color = Color(0.0823529, 0.0941176, 0.105882, 1)
+outline_size = 2
+outline_color = Color(1, 1, 1, 1)
+
+[node name="DesertWaterSource" type="Area2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_water")
+water_amount = 80.0
+cooldown_time = 30.0
+is_limited_use = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_water")
+
+[node name="WaterCircle" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.2, 0.6, 0.9, 1.0)
+polygon = PackedVector2Array(-20, 0, -14, -14, 0, -20, 14, -14, 20, 0, 14, 14, 0, 20, -14, 14)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.5, 0.8, 1, 1)
+position = Vector2(0, 0)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("3_water_sprite")
+hframes = 5
+frame = 2
+
+[node name="InteractionHint" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -24)
+texture = ExtResource("2_hint_key")
+
+[node name="Label" type="Label" parent="InteractionHint"]
+offset_left = -20.0
+offset_top = 12.0
+offset_right = 20.0
+offset_bottom = 26.0
+text = "DRINK"
+label_settings = SubResource("LabelSettings_water")
+horizontal_alignment = 1
+
+[node name="RefillCooldown" type="Timer" parent="."]
+one_shot = true

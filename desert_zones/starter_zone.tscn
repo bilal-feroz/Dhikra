@@ -15,7 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://cbpxy556rj23y" path="res://decorations/dirt_7.tscn" id="8_16u8o"]
 [ext_resource type="PackedScene" uid="uid://nh2bano4ijb1" path="res://decorations/castle_ground_fragment_1.tscn" id="8_n58r0"]
 [ext_resource type="PackedScene" uid="uid://bc4b1msoop28" path="res://hidden_water_hole.tscn" id="9_w55pe"]
+[ext_resource type="Script" path="res://water_source_spawner.gd" id="9_spawner"]
 [ext_resource type="PackedScene" uid="uid://bjh0f1ppqw4gx" path="res://decorations/dirt_8.tscn" id="9_wxd1l"]
+[ext_resource type="Script" path="res://dust_storm_spawner.gd" id="10_storm"]
 [ext_resource type="PackedScene" uid="uid://bd4qtiyb6gckq" path="res://decorations/rock_1.tscn" id="10_5xl5v"]
 [ext_resource type="PackedScene" uid="uid://75w7b6m54kb6" path="res://decorations/tree_stump.tscn" id="11_vb7pe"]
 [ext_resource type="PackedScene" uid="uid://bslsphkm41pqg" path="res://decorations/cloud_3.tscn" id="13_u142e"]
@@ -60,6 +62,21 @@ metadata/_edit_lock_ = true
 
 [node name="Shovel" parent="." instance=ExtResource("25_hdvt6")]
 position = Vector2(1788, -156)
+
+[node name="WaterSourceSpawner" type="Node2D" parent="."]
+script = ExtResource("9_spawner")
+spawn_count = 8
+min_distance_from_player = 100.0
+max_distance_from_player = 400.0
+spawn_area_size = Vector2(1500, 1500)
+spawn_area_center = Vector2(0, 0)
+
+[node name="DustStormSpawner" type="Node2D" parent="."]
+script = ExtResource("10_storm")
+spawn_interval = 45.0
+storm_duration = 60.0
+max_active_storms = 2
+spawn_radius = 1000.0
 
 [node name="EditingHelpers" type="Node2D" parent="."]
 script = ExtResource("1_qkgu3")

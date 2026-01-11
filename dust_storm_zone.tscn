@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dust_storm_001"]
+
+[ext_resource type="Script" path="res://dust_storm_zone.gd" id="1_storm"]
+
+[node name="DustStormZone" type="Area2D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_storm")
+storm_intensity = 2.0
