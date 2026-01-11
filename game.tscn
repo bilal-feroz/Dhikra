@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://bnls1g8atepgu" path="res://ui/word_button.tscn" id="18_dnsfe"]
 [ext_resource type="Texture2D" uid="uid://bu2b4b604iw82" path="res://ui/comment_template_button.png" id="20_iusmf"]
 [ext_resource type="Texture2D" uid="uid://bn007cyc112n2" path="res://ui/comment_full_select.png" id="21_uu4fx"]
+[ext_resource type="PackedScene" uid="uid://c8time_display" path="res://ui/time_display/time_display.tscn" id="22_time"]
 
 [sub_resource type="Gradient" id="Gradient_ldnr1"]
 interpolation_mode = 2
@@ -178,6 +179,16 @@ speed_scale = 3.0
 [node name="UI" type="CanvasLayer" parent="."]
 layer = 2
 
+[node name="TimeDisplayContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+
+[node name="TimeDisplay" parent="UI/TimeDisplayContainer" instance=ExtResource("22_time")]
+layout_mode = 2
+
 [node name="FlaskBar" type="MarginContainer" parent="UI"]
 offset_right = 40.0
 offset_bottom = 40.0
@@ -288,6 +299,9 @@ vertical_alignment = 1
 script = ExtResource("5_old_man")
 
 [node name="Settings" parent="." instance=ExtResource("12_sb374")]
+
+[node name="DayNightModulate" type="CanvasModulate" parent="."]
+color = Color(1, 1, 1, 1)
 
 [node name="World" parent="." instance=ExtResource("1_w7p1e")]
 metadata/_edit_lock_ = true
