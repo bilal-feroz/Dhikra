@@ -38,9 +38,9 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="CompassIcon" type="TextureRect" parent="VBoxContainer/CompassRow"]
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-pivot_offset = Vector2(10, 10)
+pivot_offset = Vector2(16, 16)
 texture = ExtResource("3_compass")
 expand_mode = 1
 stretch_mode = 5
