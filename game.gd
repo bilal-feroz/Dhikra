@@ -4,6 +4,9 @@ extends Control
 @onready var settings: CanvasLayer = $Settings
 @onready var comment_setup: CanvasLayer = $CommentSetup
 @onready var day_night_modulate: CanvasModulate = $DayNightModulate
+@onready var world_map: CanvasLayer = $WorldMap
+@onready var objective_widget: Control = $UI/ObjectiveWidget
+@onready var player: Node2D = $World/Player
 
 # Day/night colors
 const DAY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
@@ -30,19 +33,35 @@ func _ready() -> void:
 		# Initialize with current period
 		_on_period_changed(TimeManager.current_period)
 
+	# Set up objective widget with player reference
+	if objective_widget and player:
+		objective_widget.set_player(player)
+
+	# Emit game started signal
+	WorldManager.game_started.emit()
+
 
 func _process(_delta: float) -> void:
+	# Handle map toggle
+	if Input.is_action_just_pressed("toggle_map"):
+		if not _is_any_ui_active():
+			world_map.show_map(player)
 
 	if Input.is_action_just_pressed("escape_menu"):
-
 		if comment_setup.visible:
 			comment_setup.visible = false
+		elif world_map.visible:
+			world_map.visible = false
+			WorldManager.ui_active.emit(false)
 		else:
 			settings.visible = not settings.visible
+			WorldManager.ui_active.emit(settings.visible)
+			if settings.visible:
+				settings.grab()
 
-		WorldManager.ui_active.emit(settings.visible)
-		if settings.visible:
-			settings.grab()
+
+func _is_any_ui_active() -> bool:
+	return settings.visible or comment_setup.visible or world_map.visible
 
 
 func _on_settings_leave() -> void:

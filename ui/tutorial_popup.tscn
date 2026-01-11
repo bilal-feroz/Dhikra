@@ -1,0 +1,96 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://ui/tutorial_popup.gd" id="1_tutorial"]
+[ext_resource type="FontFile" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
+[ext_resource type="LabelSettings" path="res://ui/main_menu_font.tres" id="3_title"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_body"]
+line_spacing = 4.0
+font = ExtResource("2_font")
+font_size = 10
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_button"]
+font = ExtResource("2_font")
+font_size = 14
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[node name="TutorialPopup" type="CanvasLayer"]
+layer = 4
+visible = false
+script = ExtResource("1_tutorial")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="Panel" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -100.0
+offset_right = 160.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.945098, 0.92549, 0.776471, 1)
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "TUTORIAL TITLE"
+label_settings = ExtResource("3_title")
+horizontal_alignment = 1
+
+[node name="TextLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Tutorial text goes here."
+label_settings = SubResource("LabelSettings_body")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ContinueButton" type="TextureButton" parent="Panel/Margin/Content"]
+custom_minimum_size = Vector2(120, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Panel/Margin/Content/ContinueButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -10.0
+offset_right = 50.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CONTINUE"
+label_settings = SubResource("LabelSettings_button")
+horizontal_alignment = 1
+vertical_alignment = 1

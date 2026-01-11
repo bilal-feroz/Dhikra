@@ -23,6 +23,11 @@
 [ext_resource type="Texture2D" uid="uid://bu2b4b604iw82" path="res://ui/comment_template_button.png" id="20_iusmf"]
 [ext_resource type="Texture2D" uid="uid://bn007cyc112n2" path="res://ui/comment_full_select.png" id="21_uu4fx"]
 [ext_resource type="PackedScene" uid="uid://c8time_display" path="res://ui/time_display/time_display.tscn" id="22_time"]
+[ext_resource type="PackedScene" path="res://ui/objective_widget.tscn" id="23_objective"]
+[ext_resource type="PackedScene" path="res://ui/world_map.tscn" id="24_worldmap"]
+[ext_resource type="PackedScene" path="res://ui/tutorial_popup.tscn" id="25_tutorial"]
+[ext_resource type="PackedScene" path="res://ui/intro_cutscene.tscn" id="26_cutscene"]
+[ext_resource type="PackedScene" path="res://ui/end_game_summary.tscn" id="27_summary"]
 
 [sub_resource type="Gradient" id="Gradient_ldnr1"]
 interpolation_mode = 2
@@ -531,3 +536,18 @@ clip_text = true
 
 [node name="FinishCreate" parent="CommentSetup/Preview" instance=ExtResource("18_dnsfe")]
 layout_mode = 1
+
+[node name="ObjectiveWidget" parent="UI" instance=ExtResource("23_objective")]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 70.0
+offset_right = 158.0
+offset_bottom = 130.0
+
+[node name="WorldMap" parent="." instance=ExtResource("24_worldmap")]
+
+[node name="TutorialPopup" parent="." instance=ExtResource("25_tutorial")]
+
+[node name="IntroCutscene" parent="." instance=ExtResource("26_cutscene")]
+
+[node name="EndGameSummary" parent="." instance=ExtResource("27_summary")]

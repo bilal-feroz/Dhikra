@@ -1,0 +1,208 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://ui/end_game_summary.gd" id="1_summary"]
+[ext_resource type="FontFile" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
+[ext_resource type="LabelSettings" path="res://ui/main_menu_font.tres" id="3_title"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
+font = ExtResource("2_font")
+font_size = 12
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_stat_label"]
+font = ExtResource("2_font")
+font_size = 10
+font_color = Color(0.3, 0.28, 0.25, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_stat_value"]
+font = ExtResource("2_font")
+font_size = 14
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_credits"]
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.4, 0.38, 0.35, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_button"]
+font = ExtResource("2_font")
+font_size = 12
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[node name="EndGameSummary" type="CanvasLayer"]
+layer = 5
+visible = false
+script = ExtResource("1_summary")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="Panel" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -160.0
+offset_right = 180.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.945098, 0.92549, 0.776471, 1)
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="Content" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "JOURNEY COMPLETE"
+label_settings = ExtResource("3_title")
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "You reached the Final Oasis"
+label_settings = SubResource("LabelSettings_subtitle")
+horizontal_alignment = 1
+
+[node name="Separator1" type="HSeparator" parent="Panel/Margin/Content"]
+layout_mode = 2
+
+[node name="Stats" type="VBoxContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TimeRow" type="HBoxContainer" parent="Panel/Margin/Content/Stats"]
+layout_mode = 2
+
+[node name="TimeLabel" type="Label" parent="Panel/Margin/Content/Stats/TimeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Journey Time"
+label_settings = SubResource("LabelSettings_stat_label")
+
+[node name="TimeValue" type="Label" parent="Panel/Margin/Content/Stats/TimeRow"]
+layout_mode = 2
+text = "00:00"
+label_settings = SubResource("LabelSettings_stat_value")
+horizontal_alignment = 2
+
+[node name="DeathsRow" type="HBoxContainer" parent="Panel/Margin/Content/Stats"]
+layout_mode = 2
+
+[node name="DeathsLabel" type="Label" parent="Panel/Margin/Content/Stats/DeathsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Trials Faced"
+label_settings = SubResource("LabelSettings_stat_label")
+
+[node name="DeathsValue" type="Label" parent="Panel/Margin/Content/Stats/DeathsRow"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_stat_value")
+horizontal_alignment = 2
+
+[node name="WaterRow" type="HBoxContainer" parent="Panel/Margin/Content/Stats"]
+layout_mode = 2
+
+[node name="WaterLabel" type="Label" parent="Panel/Margin/Content/Stats/WaterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vessels Consumed"
+label_settings = SubResource("LabelSettings_stat_label")
+
+[node name="WaterValue" type="Label" parent="Panel/Margin/Content/Stats/WaterRow"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_stat_value")
+horizontal_alignment = 2
+
+[node name="Separator2" type="HSeparator" parent="Panel/Margin/Content"]
+layout_mode = 2
+
+[node name="Credits" type="VBoxContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+
+[node name="CreditsTitle" type="Label" parent="Panel/Margin/Content/Credits"]
+layout_mode = 2
+text = "CREDITS"
+label_settings = SubResource("LabelSettings_subtitle")
+horizontal_alignment = 1
+
+[node name="CreditsList" type="Label" parent="Panel/Margin/Content/Credits"]
+layout_mode = 2
+text = "A game about perseverance
+Made with Godot Engine"
+label_settings = SubResource("LabelSettings_credits")
+horizontal_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="PlayAgain" type="TextureButton" parent="Panel/Margin/Content/Buttons"]
+custom_minimum_size = Vector2(120, 28)
+layout_mode = 2
+focus_neighbor_right = NodePath("../MainMenu")
+focus_next = NodePath("../MainMenu")
+
+[node name="Label" type="Label" parent="Panel/Margin/Content/Buttons/PlayAgain"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -10.0
+offset_right = 50.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PLAY AGAIN"
+label_settings = SubResource("LabelSettings_button")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainMenu" type="TextureButton" parent="Panel/Margin/Content/Buttons"]
+custom_minimum_size = Vector2(120, 28)
+layout_mode = 2
+focus_neighbor_left = NodePath("../PlayAgain")
+focus_previous = NodePath("../PlayAgain")
+
+[node name="Label" type="Label" parent="Panel/Margin/Content/Buttons/MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -10.0
+offset_right = 50.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "MAIN MENU"
+label_settings = SubResource("LabelSettings_button")
+horizontal_alignment = 1
+vertical_alignment = 1

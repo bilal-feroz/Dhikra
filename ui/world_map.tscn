@@ -1,0 +1,144 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ui/world_map.gd" id="1_worldmap"]
+[ext_resource type="FontFile" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://compass.png" id="3_compass"]
+[ext_resource type="LabelSettings" path="res://ui/main_menu_font.tres" id="4_title"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_body"]
+font = ExtResource("2_font")
+font_size = 10
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_button"]
+font = ExtResource("2_font")
+font_size = 14
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_small"]
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.3, 0.28, 0.25, 1)
+
+[node name="WorldMap" type="CanvasLayer"]
+layer = 3
+visible = false
+script = ExtResource("1_worldmap")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -150.0
+offset_right = 140.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.945098, 0.92549, 0.776471, 1)
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "JOURNEY MAP"
+label_settings = ExtResource("4_title")
+horizontal_alignment = 1
+
+[node name="CompassContainer" type="CenterContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Compass" type="TextureRect" parent="Panel/Margin/Content/CompassContainer"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+texture = ExtResource("3_compass")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StartMarker" type="Label" parent="Panel/Margin/Content/CompassContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "START"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 1
+
+[node name="EndMarker" type="Label" parent="Panel/Margin/Content/CompassContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "FINAL OASIS"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 1
+
+[node name="PlayerMarker" type="ColorRect" parent="Panel/Margin/Content/CompassContainer"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="ProgressLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "Journey: 0% complete"
+label_settings = SubResource("LabelSettings_body")
+horizontal_alignment = 1
+
+[node name="DistanceLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "4336 steps remaining"
+label_settings = SubResource("LabelSettings_body")
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "Press M or ESC to close"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 1
+
+[node name="CloseButton" type="TextureButton" parent="Panel/Margin/Content"]
+custom_minimum_size = Vector2(100, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Panel/Margin/Content/CloseButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -10.0
+offset_right = 40.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CLOSE"
+label_settings = SubResource("LabelSettings_button")
+horizontal_alignment = 1
+vertical_alignment = 1

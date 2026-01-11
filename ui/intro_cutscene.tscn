@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/intro_cutscene.gd" id="1_cutscene"]
+[ext_resource type="FontFile" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_main"]
+line_spacing = 8.0
+font = ExtResource("2_font")
+font_size = 14
+font_color = Color(0.95, 0.93, 0.8, 1)
+outline_size = 2
+outline_color = Color(0.1, 0.08, 0.05, 0.8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hint"]
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.7, 0.68, 0.6, 1)
+
+[node name="IntroCutscene" type="CanvasLayer"]
+layer = 5
+visible = false
+script = ExtResource("1_cutscene")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="Panel" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextLabel" type="Label" parent="Panel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -40.0
+offset_right = 280.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "The desert stretches endlessly before you..."
+label_settings = SubResource("LabelSettings_main")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AdvanceHint" type="Label" parent="Panel"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -40.0
+offset_right = 100.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press E to continue"
+label_settings = SubResource("LabelSettings_hint")
+horizontal_alignment = 1
+vertical_alignment = 1

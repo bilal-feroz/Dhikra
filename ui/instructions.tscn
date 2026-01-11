@@ -1,0 +1,270 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ui/instructions.gd" id="1_instructions"]
+[ext_resource type="FontFile" path="res://Kenney Mini Square Mono.ttf" id="2_font"]
+[ext_resource type="LabelSettings" path="res://ui/main_menu_font.tres" id="3_title"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_section"]
+font = ExtResource("2_font")
+font_size = 10
+font_color = Color(0.4, 0.35, 0.3, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_body"]
+line_spacing = 2.0
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_key"]
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.2, 0.18, 0.15, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_button"]
+font = ExtResource("2_font")
+font_size = 14
+font_color = Color(0.08, 0.09, 0.1, 1)
+
+[node name="Instructions" type="CanvasLayer"]
+layer = 3
+visible = false
+script = ExtResource("1_instructions")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -170.0
+offset_right = 290.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+clip_contents = true
+color = Color(0.945098, 0.92549, 0.776471, 1)
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Content" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "JOURNEY OF DHIKRA"
+label_settings = ExtResource("3_title")
+horizontal_alignment = 1
+
+[node name="StoryText" type="Label" parent="Panel/Margin/Content"]
+layout_mode = 2
+text = "Cross the ancient desert and reach the Final Oasis before thirst claims you."
+label_settings = SubResource("LabelSettings_body")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Panel/Margin/Content"]
+layout_mode = 2
+
+[node name="ColumnsContainer" type="HBoxContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="LeftColumn" type="VBoxContainer" parent="Panel/Margin/Content/ColumnsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ControlsTitle" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn"]
+layout_mode = 2
+text = "CONTROLS"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="ControlsGrid" type="GridContainer" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 2
+columns = 2
+
+[node name="Key1" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "WASD/Arrows"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc1" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Move"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key2" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Shift"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc2" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Run (drains water)"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key3" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "E / Space"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc3" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Dig / Interact"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key4" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "R"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc4" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Sense water"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key5" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Q"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc5" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Summon rain"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key6" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "T"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc6" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Leave message"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key7" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "M"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc7" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Journey map"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Key8" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Esc"
+label_settings = SubResource("LabelSettings_key")
+
+[node name="Desc8" type="Label" parent="Panel/Margin/Content/ColumnsContainer/LeftColumn/ControlsGrid"]
+layout_mode = 2
+text = "Menu"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="RightColumn" type="VBoxContainer" parent="Panel/Margin/Content/ColumnsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="SurvivalTitle" type="Label" parent="Panel/Margin/Content/ColumnsContainer/RightColumn"]
+layout_mode = 2
+text = "SURVIVAL"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="SurvivalList" type="Label" parent="Panel/Margin/Content/ColumnsContainer/RightColumn"]
+layout_mode = 2
+text = "- Shade slows water drain
+- Oases restore water & flasks
+- Night is cooler (less drain)
+- Dust storms increase drain"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="TipsTitle" type="Label" parent="Panel/Margin/Content/ColumnsContainer/RightColumn"]
+layout_mode = 2
+text = "TIPS"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="TipsList" type="Label" parent="Panel/Margin/Content/ColumnsContainer/RightColumn"]
+layout_mode = 2
+text = "- Find a shovel to dig water
+- Flasks save you from death
+- Follow other travelers' marks
+- Clouds can bring life-saving rain"
+label_settings = SubResource("LabelSettings_body")
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Margin/Content"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="Begin" type="TextureButton" parent="Panel/Margin/Content/Buttons"]
+custom_minimum_size = Vector2(140, 30)
+focus_neighbor_right = NodePath("../Back")
+focus_next = NodePath("../Back")
+
+[node name="Label" type="Label" parent="Panel/Margin/Content/Buttons/Begin"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "BEGIN"
+label_settings = SubResource("LabelSettings_button")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Back" type="TextureButton" parent="Panel/Margin/Content/Buttons"]
+custom_minimum_size = Vector2(140, 30)
+focus_neighbor_left = NodePath("../Begin")
+focus_previous = NodePath("../Begin")
+
+[node name="Label" type="Label" parent="Panel/Margin/Content/Buttons/Back"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "BACK"
+label_settings = SubResource("LabelSettings_button")
+horizontal_alignment = 1
+vertical_alignment = 1
