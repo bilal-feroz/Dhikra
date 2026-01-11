@@ -46,6 +46,7 @@ var last_received_bundle: Array[Playroom.PlayerActionData] = []
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var network_manager: Node = get_node_or_null("/root/NetworkManager")
 
 
 # Spots to drop footprints at
@@ -254,10 +255,15 @@ func _physics_process(delta: float) -> void:
 			sprite_2d.modulate = Color(0.7, 0.6, 0.5, 1.0)  # Brownish tint
 			# Fade in screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.5, delta * 3.0)
+<<<<<<< Updated upstream
 		elif in_rain > 0:
 			sprite_2d.modulate = Color(0.7, 0.8, 1.0, 1.0)  # Bluish tint when in rain
 			# Fade out screen overlay
 			dust_storm_overlay.color.a = lerpf(dust_storm_overlay.color.a, 0.0, delta * 3.0)
+=======
+			# Continuous haptic rumble while in storm
+			Input.start_joy_vibration(0, 0.2, 0.4, 0.15)
+>>>>>>> Stashed changes
 		else:
 			sprite_2d.modulate = Color(1.0, 1.0, 1.0, 1.0)  # Normal color
 			# Fade out screen overlay
@@ -318,8 +324,8 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 
 		# Broadcast position for LAN multiplayer
-		if NetworkManager.is_multiplayer:
-			NetworkManager.broadcast_position(global_position, velocity)
+		if network_manager and network_manager.is_multiplayer:
+			network_manager.broadcast_position(global_position, velocity)
 
 	var can_broadcast := player_broadcast_ready and \
 				not player_last_broadcast.is_equal_approx(position)
@@ -636,6 +642,8 @@ func _on_dust_storm_entered(body: Area2D) -> void:
 		in_dust_storm += 1
 		# Shake camera when entering storm
 		_camera_shake(0.3, 5.0)
+		# Controller haptic feedback - strong vibration burst
+		Input.start_joy_vibration(0, 0.7, 1.0, 0.5)
 
 		# One-time knockback when entering storm
 		var storm_id = body.get_instance_id()

@@ -8,6 +8,7 @@ extends Control
 @onready var objective_widget: Control = $UI/ObjectiveWidget
 @onready var star_compass: Control = $UI/StarCompass
 @onready var player: Node2D = $World/Player
+@onready var network_manager: Node = get_node_or_null("/root/NetworkManager")
 
 # Day/night colors
 const DAY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
@@ -28,7 +29,7 @@ func _ready() -> void:
 	# TODO: Add retry logic if the first room is full,
 	#  fallback to the next and so on
 	# Don't connect to Playroom if using LAN multiplayer
-	if not OS.has_feature("editor") and not NetworkManager.is_multiplayer:
+	if not OS.has_feature("editor") and not (network_manager and network_manager.is_multiplayer):
 		Playroom.connect_room(Playroom.GLOBAL_ROOMS[0])
 
 	settings.visible = false

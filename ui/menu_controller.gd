@@ -8,12 +8,13 @@ signal show_instructions()
 @onready var multiplayer_btn: TextureButton = $Options/Multiplayer
 
 @onready var multiplayer_panel: ColorRect = $MultiplayerPanel
-@onready var status_label: Label = $StatusLabel/Label
+@onready var status_label: Label = $MultiplayerPanel/VBoxContainer/StatusLabel
 @onready var ip_input: LineEdit = $MultiplayerPanel/VBoxContainer/IPInput
 @onready var port_input: LineEdit = $MultiplayerPanel/VBoxContainer/PortInput
 @onready var host_btn: Button = $MultiplayerPanel/VBoxContainer/HostButton
 @onready var join_btn: Button = $MultiplayerPanel/VBoxContainer/JoinButton
 @onready var back_btn: Button = $MultiplayerPanel/VBoxContainer/BackButton
+@onready var network_manager: Node = get_node_or_null("/root/NetworkManager")
 
 @onready var sfx_ui: AudioStreamPlayer = $"../SFX UI"
 
@@ -76,7 +77,8 @@ func _on_host_pressed() -> void:
 		return
 
 	multiplayer.multiplayer_peer = peer
-	NetworkManager.setup_multiplayer(true)
+	if network_manager:
+		network_manager.setup_multiplayer(true)
 
 	# Get local IP - find actual LAN IP, not loopback or IPv6
 	var local_ip = ""
@@ -144,7 +146,8 @@ func _on_join_pressed() -> void:
 		return
 
 	multiplayer.multiplayer_peer = peer
-	NetworkManager.setup_multiplayer(false)
+	if network_manager:
+		network_manager.setup_multiplayer(false)
 
 	# Hide inputs and join button
 	ip_input.visible = false
