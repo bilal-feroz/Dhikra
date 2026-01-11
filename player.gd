@@ -114,7 +114,6 @@ var total_flasks := 0
 var in_oasis := 0
 var in_shade := 0 # Needs to be a counter because there may be overlaps
 var in_dust_storm := 0  # Counter for overlapping dust storms
-var in_rain := 0  # Counter for rain zones
 
 var current_dialog: SpeechDetector = null
 
@@ -203,6 +202,9 @@ func reset_state() -> void:
 	unused_flasks = total_flasks
 	in_oasis = 0
 	in_shade = 0
+	in_dust_storm = 0
+	in_rain = 0
+	pushed_by_storms.clear()  # Clear storm knockback tracking on respawn
 	dead = false
 	exhausted = false
 	idling = false
@@ -645,17 +647,6 @@ func _on_dust_storm_exited(body: Area2D) -> void:
 	if body is DustStormZone:
 		in_dust_storm -= 1
 		in_dust_storm = maxi(in_dust_storm, 0)
-
-func _on_rain_entered(_body: Area2D) -> void:
-	if is_remote_player:
-		return
-	in_rain += 1
-
-func _on_rain_exited(_body: Area2D) -> void:
-	if is_remote_player:
-		return
-	in_rain -= 1
-	in_rain = maxi(in_rain, 0)
 
 func _on_dialog_entered(body: Area2D) -> void:
 	if is_remote_player:
