@@ -174,7 +174,7 @@ func _on_peer_connected(id: int) -> void:
 
 	# Both players start the game
 	await get_tree().create_timer(1.5).timeout
-	get_tree().change_scene_to_file("res://world.tscn")
+	get_tree().change_scene_to_file("res://game.tscn")
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Player disconnected: ", id)
@@ -183,7 +183,7 @@ func _on_peer_disconnected(id: int) -> void:
 func _on_connected_to_server() -> void:
 	status_label.text = "Connected! Loading world..."
 	await get_tree().create_timer(1.0).timeout
-	get_tree().change_scene_to_file("res://world.tscn")
+	get_tree().change_scene_to_file("res://game.tscn")
 
 func _on_connection_failed() -> void:
 	status_label.text = "Connection failed!"
